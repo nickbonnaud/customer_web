@@ -1,6 +1,6 @@
 import 'package:customer_web/routing/route_data.dart';
 import 'package:customer_web/routing/routes.dart';
-import 'package:customer_web/screens/home_screen.dart';
+import 'package:customer_web/body/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {

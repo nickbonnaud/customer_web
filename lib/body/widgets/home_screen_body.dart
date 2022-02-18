@@ -1,4 +1,6 @@
 import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
+import 'package:customer_web/widgets/intro_row/intro_row.dart';
+import 'package:customer_web/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenBody extends StatefulWidget {
@@ -9,6 +11,7 @@ class HomeScreenBody extends StatefulWidget {
 
 class _HomeScreenBodyState extends State<HomeScreenBody> {
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey _mainScrollKey = GlobalKey();
 
   late ScrollWatcherCubit _scrollWatcherCubit; 
 
@@ -21,8 +24,17 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
   
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return CustomScrollView(
+      key: _mainScrollKey,
+      shrinkWrap: true,
+      controller: _scrollController,
+      slivers: [
+        _appBar(),
+        SliverToBoxAdapter(
+          child: IntroRow(),
+        ),
+      ],
+    );
   }
 
   @override
@@ -30,6 +42,10 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
     _scrollWatcherCubit.close();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  Widget _appBar() {
+    return MainAppBar();
   }
 
   void _handleScrollNotification() {
