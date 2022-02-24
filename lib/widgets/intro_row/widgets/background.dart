@@ -29,4 +29,10 @@ class _BackgroundState extends State<Background> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _riveAnimationController.dispose();
+    super.dispose();
+  }
 }

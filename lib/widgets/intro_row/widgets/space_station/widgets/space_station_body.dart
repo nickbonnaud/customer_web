@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:rive/rive.dart';
 
-import '../cubit/page_loaded_cubit.dart';
+import '../cubit/space_station_loaded_cubit.dart';
 
 class SpaceStationBody extends StatefulWidget {
 
   @override
-  State<StatefulWidget> createState() => _SpaceStationBodyState();
+  State<SpaceStationBody> createState() => _SpaceStationBodyState();
 }
 
 class _SpaceStationBodyState extends State<SpaceStationBody> {
-  late RiveAnimationController _riveAnimationController;
+  late final RiveAnimationController _riveAnimationController;
 
   @override
   void initState() {
@@ -22,23 +23,21 @@ class _SpaceStationBodyState extends State<SpaceStationBody> {
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       Future.delayed(const Duration(seconds: 1), () {
-        context.read<PageLoadedCubit>().loaded();
+        context.read<SpaceStationLoadedCubit>().loaded();
       });
     });
   }
   
-  
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PageLoadedCubit, bool>(
-      builder: (context, pageLoaded) {
+    return BlocBuilder<SpaceStationLoadedCubit, bool>(
+      builder: (context, spaceStationLoaded) {
         return AnimatedOpacity(
-          opacity: pageLoaded ? 1 : 0, 
+          opacity: spaceStationLoaded ? 1 : 0, 
           duration: const Duration(seconds: 1),
           child: AnimatedContainer(
-            color: Colors.transparent,
-            height: pageLoaded ? .2.sw : .1.sw,
-            width: pageLoaded ? .2.sw : .1.sw,
+            height: spaceStationLoaded ? _size() : .1.sw,
+            width: spaceStationLoaded ? _size() : .1.sw,
             duration: const Duration(seconds: 1),
             child: RiveAnimation.asset(
               'rive/header.riv',
@@ -50,5 +49,18 @@ class _SpaceStationBodyState extends State<SpaceStationBody> {
         );
       }
     );
+  }
+
+  @override
+  void dispose() {
+    _riveAnimationController.dispose();
+    super.dispose();
+  }
+
+  double _size() {
+    if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
+      return .37.sw;
+    }
+    return .27.sw;
   }
 }

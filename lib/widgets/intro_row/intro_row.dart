@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'widgets/background.dart';
-import 'widgets/phone_image/phone_image.dart';
+import 'widgets/intro_foreground/intro_foreground.dart';
 import 'widgets/planets/planets.dart';
+import 'widgets/space_ship/space_ship.dart';
 import 'widgets/space_station/space_station.dart';
 
 class IntroRow extends StatelessWidget {
@@ -17,7 +18,8 @@ class IntroRow extends StatelessWidget {
           Background(),
           Planets(),
           SpaceStation(),
-          PhoneImage()
+          SpaceShip(),
+          IntroForeground()
         ],
       ),
     );
