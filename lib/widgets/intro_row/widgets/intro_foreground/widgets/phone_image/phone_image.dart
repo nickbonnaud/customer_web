@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
 
 import 'cubit/phone_image_loaded_cubit.dart';
 import 'widgets/cubit/image_switcher_cubit.dart';
@@ -15,6 +18,8 @@ class PhoneImage extends StatefulWidget {
 class _PhoneImageState extends State<PhoneImage> with SingleTickerProviderStateMixin {
   final Curve _curve = Curves.easeInOut;
 
+  late final Timer _timer;
+  
   late final AnimationController _animationController;
   late final CurvedAnimation _curvedAnimation;
   late final Animation<Offset> _animationOffset;
@@ -32,7 +37,7 @@ class _PhoneImageState extends State<PhoneImage> with SingleTickerProviderStateM
     ).animate(_curvedAnimation);
     
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 1), () {
+      _timer = Timer(const Duration(seconds: 1), () {
         context.read<PhoneImageLoadedCubit>().loaded();
         _animationController.repeat(reverse: true);
       });
@@ -47,7 +52,7 @@ class _PhoneImageState extends State<PhoneImage> with SingleTickerProviderStateM
           opacity: imageLoaded ? 1 : 0, 
           duration: const Duration(seconds: 1),
           child: AnimatedContainer(
-            height: imageLoaded ? .6.sh : .25.sh,
+            height: imageLoaded ? _size() : .25.sh,
             duration: const Duration(seconds: 1),
             child: SlideTransition(
               position: _animationOffset,
@@ -64,8 +69,18 @@ class _PhoneImageState extends State<PhoneImage> with SingleTickerProviderStateM
 
   @override
   void dispose() {
+    _timer.cancel();
     _animationController.dispose();
     _curvedAnimation.dispose();
     super.dispose();
+  }
+
+  double _size() {
+    if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
+      return .6.sh;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)) {
+      return .5.sh;
+    }
+    return .6.sh;
   }
 }

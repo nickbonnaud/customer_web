@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +16,7 @@ class SpaceStationBody extends StatefulWidget {
 
 class _SpaceStationBodyState extends State<SpaceStationBody> {
   late final RiveAnimationController _riveAnimationController;
+  late final Timer _timer;
 
   @override
   void initState() {
@@ -22,9 +25,10 @@ class _SpaceStationBodyState extends State<SpaceStationBody> {
     _riveAnimationController = OneShotAnimation('ufos');
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 1), () {
-        context.read<SpaceStationLoadedCubit>().loaded();
-      });
+      _timer = Timer(
+        const Duration(seconds: 1),
+        () => context.read<SpaceStationLoadedCubit>().loaded()
+      );
     });
   }
   
@@ -53,12 +57,21 @@ class _SpaceStationBodyState extends State<SpaceStationBody> {
 
   @override
   void dispose() {
+    _timer.cancel();
     _riveAnimationController.dispose();
     super.dispose();
   }
 
   double _size() {
-    if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
+    if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
+      return .65.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_MOBILE')) {
+      return .5.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan(TABLET)) {
+      return .4.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)) {
+      return .35.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
       return .37.sw;
     }
     return .27.sw;

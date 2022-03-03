@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,20 +16,59 @@ class CallToActionQR extends StatefulWidget {
 }
 
 class _CallToActionQRState extends State<CallToActionQR> {
-
+  late final Timer _timer;
+  
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 1), () {
-        context.read<QrCodeLoadedCubit>().loaded();
-      });
+      _timer = Timer(
+        const Duration(seconds: 1),
+        () => context.read<QrCodeLoadedCubit>().loaded()
+      );
     });
   }
   
   @override
   Widget build(BuildContext context) {
+    return _downLoadAction(context: context);
+  }
+
+  Widget _downLoadAction({required BuildContext context}) {
+    if (ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)) {
+      return _mediumScreen(context: context);
+    }
+    return _largeScreen(context: context);
+  }
+
+  @override
+  dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  Widget _mediumScreen({required BuildContext context}) {
+    return BlocBuilder<QrCodeLoadedCubit, bool>(
+      builder: (context, qrCodeLoaded) {
+        return AnimatedOpacity(
+          opacity: qrCodeLoaded ? 1 : 0,
+          duration: const Duration(seconds: 1),
+          child: AnimatedContainer(
+            duration: const Duration(seconds: 1),
+            height: qrCodeLoaded ? _qrCodeSize(context: context) : 10.w,
+            width: qrCodeLoaded ? _qrCodeSize(context: context) : 10.w,
+            child: const Image(
+              image: AssetImage('qr_code.png'),
+              fit: BoxFit.contain,
+            ),
+          ),
+        );
+      }
+    );
+  }
+  
+  Widget _largeScreen({required BuildContext context}) {
     return Row(
       children: [
         Padding(
@@ -77,7 +118,11 @@ class _CallToActionQRState extends State<CallToActionQR> {
   }
 
   double _qrCodeSize({required BuildContext context}) {
-    if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
+    if (ResponsiveWrapper.of(context).isSmallerThan(TABLET)) {
+      return 200.w;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)) {
+      return 180.w;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
       return 140.w;
     }
     return 100.w;

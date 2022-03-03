@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +16,7 @@ class PlanetsBody extends StatefulWidget {
 
 class _PlanetsBodyState extends State<PlanetsBody> {
   late final RiveAnimationController _riveAnimationController;
+  late final Timer _timer;
 
   @override
   void initState() {
@@ -22,9 +25,10 @@ class _PlanetsBodyState extends State<PlanetsBody> {
     _riveAnimationController = OneShotAnimation('moon_orbit');
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 1), () {
-        context.read<PlanetsLoadedCubit>().loaded();
-      });
+      _timer = Timer(
+        const Duration(seconds: 1),
+        () => context.read<PlanetsLoadedCubit>().loaded()
+      );
     });
   }
   
@@ -53,12 +57,21 @@ class _PlanetsBodyState extends State<PlanetsBody> {
 
   @override
   void dispose() {
+    _timer.cancel();
     _riveAnimationController.dispose();
     super.dispose();
   }
 
   double _size() {
-    if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
+    if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
+      return .55.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_MOBILE')) {
+      return .36.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan(TABLET)) {
+      return .32.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)) {
+      return .3.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
       return .28.sw;
     }
     return .25.sw;

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class SpaceShipBody extends StatefulWidget {
 
 class _SpaceShipBodyState extends State<SpaceShipBody> {
   late final RiveAnimationController _riveAnimationController;
+  late final Timer _timer;
 
   @override
   void initState() {
@@ -24,9 +26,10 @@ class _SpaceShipBodyState extends State<SpaceShipBody> {
     _riveAnimationController = OneShotAnimation('flame');
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 1), () {
-        context.read<SpaceShipLoadedCubit>().loaded();
-      });
+      _timer = Timer(
+        const Duration(seconds: 1),
+        () => context.read<SpaceShipLoadedCubit>().loaded()
+      );
     });
   }
   
@@ -58,12 +61,21 @@ class _SpaceShipBodyState extends State<SpaceShipBody> {
 
   @override
   void dispose() {
+    _timer.cancel();
     _riveAnimationController.dispose();
     super.dispose();
   }
 
   double _size() {
-    if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
+    if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
+      return .6.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_MOBILE')) {
+      return .45.sw;
+    } else  if (ResponsiveWrapper.of(context).isSmallerThan(TABLET)) {
+      return .35.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)) {
+      return .32.sw;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
       return .35.sw;
     }
     return .25.sw;

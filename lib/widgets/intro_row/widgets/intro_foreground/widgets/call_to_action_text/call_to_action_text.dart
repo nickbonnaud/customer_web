@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,15 +14,17 @@ class CallToActionText extends StatefulWidget {
 }
 
 class _CallToActionTextState extends State<CallToActionText> {
-
+  late final Timer _timer;
+  
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 1), () {
-        context.read<TextLoadedCubit>().loaded();
-      });
+      _timer = Timer(
+        const Duration(seconds: 1),
+        () => context.read<TextLoadedCubit>().loaded()
+      );
     });
   }
   
@@ -43,8 +47,22 @@ class _CallToActionTextState extends State<CallToActionText> {
     );
   }
 
+  @override
+  dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   double _titleTextSize({required BuildContext context}) {
-    if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
+    if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
+      return 65.sp;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_MOBILE')) {
+      return 55.sp;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan(TABLET)) {
+      return 40.sp;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)) {
+      return 55.sp;
+    } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_DESKTOP')) {
       return 60.sp;
     }
     return 50.sp;
