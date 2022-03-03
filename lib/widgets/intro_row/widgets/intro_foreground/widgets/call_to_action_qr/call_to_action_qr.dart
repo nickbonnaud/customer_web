@@ -1,35 +1,12 @@
-import 'dart:async';
-
+import 'package:customer_web/themes/global_colors.dart';
+import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
-import 'package:customer_web/themes/global_colors.dart';
+class CallToActionQR extends StatelessWidget {
 
-import 'cubit/qr_code_loaded_cubit.dart';
-
-class CallToActionQR extends StatefulWidget {
-
-  @override
-  State<CallToActionQR> createState() => _CallToActionQRState();
-}
-
-class _CallToActionQRState extends State<CallToActionQR> {
-  late final Timer _timer;
-  
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _timer = Timer(
-        const Duration(seconds: 1),
-        () => context.read<QrCodeLoadedCubit>().loaded()
-      );
-    });
-  }
-  
   @override
   Widget build(BuildContext context) {
     return _downLoadAction(context: context);
@@ -42,22 +19,16 @@ class _CallToActionQRState extends State<CallToActionQR> {
     return _largeScreen(context: context);
   }
 
-  @override
-  dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
   Widget _mediumScreen({required BuildContext context}) {
-    return BlocBuilder<QrCodeLoadedCubit, bool>(
-      builder: (context, qrCodeLoaded) {
+    return BlocBuilder<IntroRowLoadedCubit, bool>(
+      builder: (context, introLoaded) {
         return AnimatedOpacity(
-          opacity: qrCodeLoaded ? 1 : 0,
+          opacity: introLoaded ? 1 : 0,
           duration: const Duration(seconds: 1),
           child: AnimatedContainer(
             duration: const Duration(seconds: 1),
-            height: qrCodeLoaded ? _qrCodeSize(context: context) : 10.w,
-            width: qrCodeLoaded ? _qrCodeSize(context: context) : 10.w,
+            height: introLoaded ? _qrCodeSize(context: context) : 10.w,
+            width: introLoaded ? _qrCodeSize(context: context) : 10.w,
             child: const Image(
               image: AssetImage('qr_code.png'),
               fit: BoxFit.contain,
@@ -73,10 +44,10 @@ class _CallToActionQRState extends State<CallToActionQR> {
       children: [
         Padding(
           padding: EdgeInsets.only(right: 10.w),
-          child: BlocBuilder<QrCodeLoadedCubit, bool>(
-            builder: (context, qrCodeLoaded) {
+          child: BlocBuilder<IntroRowLoadedCubit, bool>(
+            builder: (context, introLoaded) {
               return AnimatedOpacity(
-                opacity: qrCodeLoaded ? 1 : 0,
+                opacity: introLoaded ? 1 : 0,
                 duration: const Duration(seconds: 1),
                 child: Text(
                   "Scan to download",
@@ -89,15 +60,15 @@ class _CallToActionQRState extends State<CallToActionQR> {
             }
           )
         ),
-        BlocBuilder<QrCodeLoadedCubit, bool>(
-          builder: (context, qrCodeLoaded) {
+        BlocBuilder<IntroRowLoadedCubit, bool>(
+          builder: (context, introLoaded) {
             return AnimatedOpacity(
-              opacity: qrCodeLoaded ? 1 : 0,
+              opacity: introLoaded ? 1 : 0,
               duration: const Duration(seconds: 1),
               child: AnimatedContainer(
                 duration: const Duration(seconds: 1),
-                height: qrCodeLoaded ? _qrCodeSize(context: context) : 10.w,
-                width: qrCodeLoaded ? _qrCodeSize(context: context) : 10.w,
+                height: introLoaded ? _qrCodeSize(context: context) : 10.w,
+                width: introLoaded ? _qrCodeSize(context: context) : 10.w,
                 child: const Image(
                   image: AssetImage('qr_code.png'),
                   fit: BoxFit.contain,

@@ -1,12 +1,9 @@
-import 'dart:async';
-
+import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:rive/rive.dart';
-
-import '../cubit/planets_loaded_cubit.dart';
 
 class PlanetsBody extends StatefulWidget {
 
@@ -16,32 +13,24 @@ class PlanetsBody extends StatefulWidget {
 
 class _PlanetsBodyState extends State<PlanetsBody> {
   late final RiveAnimationController _riveAnimationController;
-  late final Timer _timer;
 
   @override
   void initState() {
     super.initState();
 
     _riveAnimationController = OneShotAnimation('moon_orbit');
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _timer = Timer(
-        const Duration(seconds: 1),
-        () => context.read<PlanetsLoadedCubit>().loaded()
-      );
-    });
   }
   
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PlanetsLoadedCubit, bool>(
-      builder: (context, planetsLoaded) {
+    return BlocBuilder<IntroRowLoadedCubit, bool>(
+      builder: (context, introLoaded) {
         return AnimatedOpacity(
-          opacity: planetsLoaded ? 1 : 0, 
+          opacity: introLoaded ? 1 : 0, 
           duration: const Duration(seconds: 1),
           child: AnimatedContainer(
-            height: planetsLoaded ? _size() : .1.sw,
-            width: planetsLoaded ? _size() : .1.sw,
+            height: introLoaded ? _size() : .1.sw,
+            width: introLoaded ? _size() : .1.sw,
             duration: const Duration(seconds: 1),
             child: RiveAnimation.asset(
               'rive/header.riv',
@@ -57,7 +46,6 @@ class _PlanetsBodyState extends State<PlanetsBody> {
 
   @override
   void dispose() {
-    _timer.cancel();
     _riveAnimationController.dispose();
     super.dispose();
   }

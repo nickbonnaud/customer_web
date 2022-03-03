@@ -1,43 +1,21 @@
-import 'dart:async';
-
+import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
-import 'cubit/intro_logo_loaded_cubit.dart';
+class IntroLogo extends StatelessWidget {
 
-class IntroLogo extends StatefulWidget {
-
-  @override
-  State<IntroLogo> createState() => _IntroLogoState();
-}
-
-class _IntroLogoState extends State<IntroLogo> {
-  late final Timer _timer;
-  
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _timer = Timer(
-        const Duration(seconds: 1),
-        () => context.read<IntroLogoLoadedCubit>().loaded()
-      );
-    });
-  }
-  
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<IntroLogoLoadedCubit, bool>(
-      builder: (context, introLogoLoaded) {
+    return BlocBuilder<IntroRowLoadedCubit, bool>(
+      builder: (context, introLoaded) {
         return AnimatedOpacity(
-          opacity: introLogoLoaded ? 1 : 0,
+          opacity: introLoaded ? 1 : 0,
           duration: const Duration(seconds: 1),
           child: AnimatedContainer(
             duration: const Duration(seconds: 1),
-            width: introLogoLoaded ? _size(context: context) : .1.sw,
+            width: introLoaded ? _size(context: context) : .1.sw,
             child: const Image(
               image: AssetImage('logo.png'),
               fit: BoxFit.contain,
@@ -46,12 +24,6 @@ class _IntroLogoState extends State<IntroLogo> {
         );
       }
     );
-  }
-
-  @override
-  dispose() {
-    _timer.cancel();
-    super.dispose();
   }
   
   double _size({required BuildContext context}) {

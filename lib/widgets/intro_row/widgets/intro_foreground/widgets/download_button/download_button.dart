@@ -1,45 +1,22 @@
-import 'dart:async';
-
+import 'package:customer_web/themes/global_colors.dart';
+import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:customer_web/themes/global_colors.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
-import 'cubit/download_button_loaded_cubit.dart';
-
-class DownloadButton extends StatefulWidget {
-
-  @override
-  State<DownloadButton> createState() => _DownloadButtonState();
-}
-
-class _DownloadButtonState extends State<DownloadButton> {
-  late final Timer _timer;
-  
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _timer = Timer(
-        const Duration(seconds: 1), 
-        () => context.read<DownloadButtonLoadedCubit>().loaded()
-      );
-    });
-  }
+class DownloadButton extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DownloadButtonLoadedCubit, bool>(
-      builder: (context, downloadButtonLoaded) {
+    return BlocBuilder<IntroRowLoadedCubit, bool>(
+      builder: (context, introLoaded) {
         return AnimatedOpacity(
-          opacity: downloadButtonLoaded ? 1 : 0,
+          opacity: introLoaded ? 1 : 0,
           duration: const Duration(seconds: 1),
           child: AnimatedContainer(
             duration: const Duration(seconds: 1),
-            width: downloadButtonLoaded ? _buttonWidth() : 1.w,
+            width: introLoaded ? _buttonWidth(context: context) : 1.w,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 15.h)
@@ -49,7 +26,7 @@ class _DownloadButtonState extends State<DownloadButton> {
                 children: [
                   AnimatedDefaultTextStyle(
                     style: TextStyle(
-                      fontSize: downloadButtonLoaded ? _fontSize() : 1.sp,
+                      fontSize: introLoaded ? _fontSize(context: context) : 1.sp,
                       color: Theme.of(context).colorScheme.onCallToAction,
                       fontWeight: FontWeight.w800
                     ),
@@ -58,7 +35,7 @@ class _DownloadButtonState extends State<DownloadButton> {
                   ),
                   AnimatedDefaultTextStyle(
                     style: TextStyle(
-                      fontSize: downloadButtonLoaded ? _fontSize() : 1.sp,
+                      fontSize: introLoaded ? _fontSize(context: context) : 1.sp,
                       color: Theme.of(context).colorScheme.onCallToAction,
                       fontWeight: FontWeight.w800
                     ),
@@ -74,20 +51,14 @@ class _DownloadButtonState extends State<DownloadButton> {
     );
   }
 
-  @override
-  dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  double _buttonWidth() {
+  double _buttonWidth({required BuildContext context}) {
     if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
       return 500.w;
     }
     return 400.w;
   }
   
-  double _fontSize() {
+  double _fontSize({required BuildContext context}) {
     if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
       return 56.sp;
     }

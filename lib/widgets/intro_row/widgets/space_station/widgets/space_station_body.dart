@@ -1,12 +1,9 @@
-import 'dart:async';
-
+import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:rive/rive.dart';
-
-import '../cubit/space_station_loaded_cubit.dart';
 
 class SpaceStationBody extends StatefulWidget {
 
@@ -16,32 +13,24 @@ class SpaceStationBody extends StatefulWidget {
 
 class _SpaceStationBodyState extends State<SpaceStationBody> {
   late final RiveAnimationController _riveAnimationController;
-  late final Timer _timer;
 
   @override
   void initState() {
     super.initState();
 
     _riveAnimationController = OneShotAnimation('ufos');
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _timer = Timer(
-        const Duration(seconds: 1),
-        () => context.read<SpaceStationLoadedCubit>().loaded()
-      );
-    });
   }
   
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SpaceStationLoadedCubit, bool>(
-      builder: (context, spaceStationLoaded) {
+    return BlocBuilder<IntroRowLoadedCubit, bool>(
+      builder: (context, introLoaded) {
         return AnimatedOpacity(
-          opacity: spaceStationLoaded ? 1 : 0, 
+          opacity: introLoaded ? 1 : 0, 
           duration: const Duration(seconds: 1),
           child: AnimatedContainer(
-            height: spaceStationLoaded ? _size() : .1.sw,
-            width: spaceStationLoaded ? _size() : .1.sw,
+            height: introLoaded ? _size() : .1.sw,
+            width: introLoaded ? _size() : .1.sw,
             duration: const Duration(seconds: 1),
             child: RiveAnimation.asset(
               'rive/header.riv',
@@ -57,7 +46,6 @@ class _SpaceStationBodyState extends State<SpaceStationBody> {
 
   @override
   void dispose() {
-    _timer.cancel();
     _riveAnimationController.dispose();
     super.dispose();
   }

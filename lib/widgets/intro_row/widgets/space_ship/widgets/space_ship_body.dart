@@ -1,13 +1,11 @@
-import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:rive/rive.dart';
-
-import '../cubit/space_ship_loaded_cubit.dart';
 
 class SpaceShipBody extends StatefulWidget {
 
@@ -17,32 +15,24 @@ class SpaceShipBody extends StatefulWidget {
 
 class _SpaceShipBodyState extends State<SpaceShipBody> {
   late final RiveAnimationController _riveAnimationController;
-  late final Timer _timer;
 
   @override
   void initState() {
     super.initState();
 
     _riveAnimationController = OneShotAnimation('flame');
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _timer = Timer(
-        const Duration(seconds: 1),
-        () => context.read<SpaceShipLoadedCubit>().loaded()
-      );
-    });
   }
   
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SpaceShipLoadedCubit, bool>(
-      builder: (context, spaceShipLoaded) {
+    return BlocBuilder<IntroRowLoadedCubit, bool>(
+      builder: (context, introLoaded) {
         return AnimatedOpacity(
-          opacity: spaceShipLoaded ? 1 : 0,
+          opacity: introLoaded ? 1 : 0,
           duration: const Duration(seconds: 1),
           child: AnimatedContainer(
-            height: spaceShipLoaded ? _size() : .1.sw,
-            width: spaceShipLoaded ? _size() : .1.sw,
+            height: introLoaded ? _size() : .1.sw,
+            width: introLoaded ? _size() : .1.sw,
             duration: const Duration(seconds: 1),
             child: Transform.rotate(
               angle: math.pi / 4,
@@ -61,7 +51,6 @@ class _SpaceShipBodyState extends State<SpaceShipBody> {
 
   @override
   void dispose() {
-    _timer.cancel();
     _riveAnimationController.dispose();
     super.dispose();
   }

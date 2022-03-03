@@ -2,6 +2,9 @@ import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
 import 'package:customer_web/widgets/intro_row/intro_row.dart';
 import 'package:customer_web/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
 
 class HomeScreenBody extends StatefulWidget {
 
@@ -31,7 +34,10 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
       slivers: [
         _appBar(),
         SliverToBoxAdapter(
-          child: IntroRow(),
+          child: BlocProvider<IntroRowLoadedCubit>(
+            create: (_) => IntroRowLoadedCubit(),
+            child: IntroRow(),
+          )
         ),
       ],
     );
