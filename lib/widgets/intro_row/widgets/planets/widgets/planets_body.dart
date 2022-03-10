@@ -33,7 +33,7 @@ class _PlanetsBodyState extends State<PlanetsBody> {
             width: introLoaded ? _size() : .1.sw,
             duration: const Duration(seconds: 1),
             child: RiveAnimation.asset(
-              'rive/header.riv',
+              'rive/main_rive.riv',
               artboard: 'earth_moon',
               controllers: [_riveAnimationController],
               fit: BoxFit.contain,

@@ -37,7 +37,7 @@ class _SpaceShipBodyState extends State<SpaceShipBody> {
             child: Transform.rotate(
               angle: math.pi / 4,
               child: RiveAnimation.asset(
-                'rive/header.riv',
+                'rive/main_rive.riv',
                 artboard: 'rocket',
                 controllers: [_riveAnimationController],
                 fit: BoxFit.contain,
