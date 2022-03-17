@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
-import 'package:customer_web/resources/responsive_layout_helper.dart';
 import 'package:customer_web/resources/visibility_finder.dart';
 import 'package:customer_web/widgets/how_to_row/widgets/widgets/how_to_image.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,6 @@ class HowToBody extends StatefulWidget {
 class _HowToBodyState extends State<HowToBody> {
   static const double _enterMinHeight = 400;
   
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
   final GlobalKey _bodyKey = GlobalKey();
 
   late VisibilityFinder _visibilityFinder;
