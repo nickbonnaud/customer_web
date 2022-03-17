@@ -1,6 +1,7 @@
 import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
 import 'package:customer_web/widgets/explanation_row/bloc/explanation_bloc.dart';
 import 'package:customer_web/widgets/explanation_row/explanation_row.dart';
+import 'package:customer_web/widgets/how_to_row/how_to_row.dart';
 import 'package:customer_web/widgets/intro_row/intro_row.dart';
 import 'package:customer_web/widgets/locations_row/locations_row.dart';
 import 'package:customer_web/widgets/main_app_bar.dart';
@@ -60,9 +61,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
           child: LocationsRow(mainScrollKey: _mainScrollKey),
         ),
         SliverToBoxAdapter(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-          ),
+          child: HowToRow(mainScrollKey: _mainScrollKey)
         )
       ],
     );
