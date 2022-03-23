@@ -33,11 +33,16 @@ class HowToBloc extends Bloc<HowToEvent, HowToState> {
 
   void _eventHandler() {
     on<IndexChanged>((event, emit) => _mapIndexChangedToState(event: event, emit: emit));
+    on<IndexManuallyChanged>((event, emit) => _mapIndexManuallyChangedToState(event: event, emit: emit));
     on<SectionVisibilityChanged>((event, emit) => _mapSectionVisibilityChangedToState(event: event, emit: emit));
   }
 
   void _mapIndexChangedToState({required IndexChanged event, required Emitter<HowToState> emit}) {
-    emit(state.update(switcherIndex: state.switcherIndex + 1));
+    emit(state.update(switcherIndex: state.switcherIndex + 1, isManualChange: false));
+  }
+
+  void _mapIndexManuallyChangedToState({required IndexManuallyChanged event,  required Emitter<HowToState> emit}) {
+    emit(state.update(switcherIndex: event.selectedIndex, isManualChange: true));
   }
 
   void _mapSectionVisibilityChangedToState({required SectionVisibilityChanged event, required Emitter<HowToState> emit}) {

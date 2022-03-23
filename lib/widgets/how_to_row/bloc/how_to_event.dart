@@ -10,3 +10,15 @@ abstract class HowToEvent extends Equatable {
 class IndexChanged extends HowToEvent {}
 
 class SectionVisibilityChanged extends HowToEvent {}
+
+class IndexManuallyChanged extends HowToEvent  {
+  final int selectedIndex;
+
+  const IndexManuallyChanged({required this.selectedIndex});
+
+  @override
+  List<Object> get props => [selectedIndex];
+
+  @override
+  String toString() => 'IndexManuallyChanged { selectedIndex: $selectedIndex }';
+}

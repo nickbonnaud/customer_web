@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
 import 'package:customer_web/resources/visibility_finder.dart';
+import 'package:customer_web/widgets/how_to_row/widgets/widgets/how_to_dots.dart';
 import 'package:customer_web/widgets/how_to_row/widgets/widgets/how_to_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,8 +39,17 @@ class _HowToBodyState extends State<HowToBody> {
   
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ScrollWatcherCubit, double>(
-      listener: (context, absoluteOffset) => _updateScroll(absoluteOffset: absoluteOffset),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ScrollWatcherCubit, double>(
+          listener: (context, absoluteOffset) => _updateScroll(absoluteOffset: absoluteOffset),
+        ),
+        
+        BlocListener<HowToBloc, HowToState>(
+          listenWhen: (previous, current) => !previous.isManualChange && current.isManualChange,
+          listener: (context, state) => _resetTimer()
+        )
+      ],
       child: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
         ? _column()
         : _row()
@@ -57,7 +67,13 @@ class _HowToBodyState extends State<HowToBody> {
       key: _bodyKey,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        HowToImage(),
+        Column(
+          children: [
+            HowToImage(),
+            HowToDots(),
+            SizedBox(height: 10.h)
+          ],
+        ),
         Expanded(
           child: HowToText()
         )
@@ -70,6 +86,7 @@ class _HowToBodyState extends State<HowToBody> {
       key: _bodyKey,
       children: [
         HowToImage(),
+        HowToDots(),
         SizedBox(height: 30.h),
         HowToText(),
         SizedBox(height: 20.h),
@@ -85,6 +102,11 @@ class _HowToBodyState extends State<HowToBody> {
       sectionCurrentlyVisible ? _play() : _pause();
       BlocProvider.of<HowToBloc>(context).add(SectionVisibilityChanged());
     }
+  }
+
+  void _resetTimer() {
+    _pause();
+    _play();
   }
 
   void _play() {
