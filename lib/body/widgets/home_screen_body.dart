@@ -1,6 +1,7 @@
 import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
 import 'package:customer_web/widgets/explanation_row/bloc/explanation_bloc.dart';
 import 'package:customer_web/widgets/explanation_row/explanation_row.dart';
+import 'package:customer_web/widgets/footer_row/footer_row.dart';
 import 'package:customer_web/widgets/how_to_row/how_to_row.dart';
 import 'package:customer_web/widgets/intro_row/intro_row.dart';
 import 'package:customer_web/widgets/locations_row/locations_row.dart';
@@ -8,6 +9,7 @@ import 'package:customer_web/widgets/main_app_bar.dart';
 import 'package:customer_web/widgets/quick_sheet_row/quick_sheet_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../widgets/features_row/features_row.dart';
 import '../../widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
@@ -62,6 +64,15 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
         ),
         SliverToBoxAdapter(
           child: HowToRow(mainScrollKey: _mainScrollKey)
+        ),
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              SizedBox(height: 100.h),
+              const Divider(),
+              FooterRow()
+            ],
+          ),
         )
       ],
     );
