@@ -1,4 +1,4 @@
-import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
+import 'package:customer_web/widgets/intro_row/bloc/intro_widgets_loaded_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,29 +18,23 @@ class _PlanetsBodyState extends State<PlanetsBody> {
   void initState() {
     super.initState();
 
-    _riveAnimationController = OneShotAnimation('moon_orbit');
+    _riveAnimationController = OneShotAnimation(
+      'moon_orbit',
+      onStart: () => BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(PlanetsLoaded()),
+    );
   }
   
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<IntroRowLoadedCubit, bool>(
-      builder: (context, introLoaded) {
-        return AnimatedOpacity(
-          opacity: introLoaded ? 1 : 0, 
-          duration: const Duration(seconds: 1),
-          child: AnimatedContainer(
-            height: introLoaded ? _size() : .1.sw,
-            width: introLoaded ? _size() : .1.sw,
-            duration: const Duration(seconds: 1),
-            child: RiveAnimation.asset(
-              'rive/main_rive.riv',
-              artboard: 'earth_moon',
-              controllers: [_riveAnimationController],
-              fit: BoxFit.contain,
-            )
-          ),
-        );
-      }
+    return SizedBox(
+      height: _size(),
+      width: _size(),
+      child: RiveAnimation.asset(
+        'rive/main_rive.riv',
+        artboard: 'earth_moon',
+        controllers: [_riveAnimationController],
+        fit: BoxFit.contain,
+      )
     );
   }
 
@@ -48,6 +42,10 @@ class _PlanetsBodyState extends State<PlanetsBody> {
   void dispose() {
     _riveAnimationController.dispose();
     super.dispose();
+  }
+
+  void _animationStarted() {
+    print('planets started');
   }
 
   double _size() {

@@ -1,28 +1,33 @@
-import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
+import 'package:customer_web/widgets/intro_row/bloc/intro_widgets_loaded_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
-class IntroLogo extends StatelessWidget {
+class IntroLogo extends StatefulWidget {
+
+  @override
+  State<IntroLogo> createState() => _IntroLogoState();
+}
+
+class _IntroLogoState extends State<IntroLogo> {
+  final Image _image = Image.asset('logo.png', fit: BoxFit.contain);
+  
+  @override
+  void initState() {
+    super.initState();
+    _image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((_, __) {
+      if (mounted) {
+        BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(LogoLoaded());
+      }
+    }));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<IntroRowLoadedCubit, bool>(
-      builder: (context, introLoaded) {
-        return AnimatedOpacity(
-          opacity: introLoaded ? 1 : 0,
-          duration: const Duration(seconds: 1),
-          child: AnimatedContainer(
-            duration: const Duration(seconds: 1),
-            width: introLoaded ? _size(context: context) : .1.sw,
-            child: const Image(
-              image: AssetImage('logo.png'),
-              fit: BoxFit.contain,
-            )
-          ),
-        );
-      }
+    return SizedBox(
+      width: _size(context: context),
+      child: _image
     );
   }
   

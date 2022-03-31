@@ -1,12 +1,29 @@
 import 'package:customer_web/themes/global_colors.dart';
-import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
+import 'package:customer_web/widgets/intro_row/bloc/intro_widgets_loaded_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
-class CallToActionQR extends StatelessWidget {
+class CallToActionQR extends StatefulWidget {
 
+  @override
+  State<CallToActionQR> createState() => _CallToActionQRState();
+}
+
+class _CallToActionQRState extends State<CallToActionQR> {
+  final Image _image = Image.asset('qr_code.png', fit: BoxFit.contain);
+  
+  @override
+  void initState() {
+    super.initState();
+    _image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((_, __) {
+      if (mounted) {
+        BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(QrCodeLoaded());
+      }
+    }));
+  }
+  
   @override
   Widget build(BuildContext context) {
     return _downLoadAction(context: context);
@@ -20,22 +37,10 @@ class CallToActionQR extends StatelessWidget {
   }
 
   Widget _mediumScreen({required BuildContext context}) {
-    return BlocBuilder<IntroRowLoadedCubit, bool>(
-      builder: (context, introLoaded) {
-        return AnimatedOpacity(
-          opacity: introLoaded ? 1 : 0,
-          duration: const Duration(seconds: 1),
-          child: AnimatedContainer(
-            duration: const Duration(seconds: 1),
-            height: introLoaded ? _qrCodeSize(context: context) : 10.w,
-            width: introLoaded ? _qrCodeSize(context: context) : 10.w,
-            child: const Image(
-              image: AssetImage('qr_code.png'),
-              fit: BoxFit.contain,
-            ),
-          ),
-        );
-      }
+    return SizedBox(
+      height: _qrCodeSize(context: context),
+      width: _qrCodeSize(context: context),
+      child: _image,
     );
   }
   
@@ -44,38 +49,18 @@ class CallToActionQR extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.only(right: 10.w),
-          child: BlocBuilder<IntroRowLoadedCubit, bool>(
-            builder: (context, introLoaded) {
-              return AnimatedOpacity(
-                opacity: introLoaded ? 1 : 0,
-                duration: const Duration(seconds: 1),
-                child: Text(
-                  "Scan to download",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.callToAction,
-                    fontSize: _qrTextSize(context: context)
-                  ),
-                ),
-              );
-            }
-          )
+          child: Text(
+            "Scan to download",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.callToAction,
+              fontSize: _qrTextSize(context: context)
+            ),
+          ),
         ),
-        BlocBuilder<IntroRowLoadedCubit, bool>(
-          builder: (context, introLoaded) {
-            return AnimatedOpacity(
-              opacity: introLoaded ? 1 : 0,
-              duration: const Duration(seconds: 1),
-              child: AnimatedContainer(
-                duration: const Duration(seconds: 1),
-                height: introLoaded ? _qrCodeSize(context: context) : 10.w,
-                width: introLoaded ? _qrCodeSize(context: context) : 10.w,
-                child: const Image(
-                  image: AssetImage('qr_code.png'),
-                  fit: BoxFit.contain,
-                ),
-              ),
-            );
-          }
+        SizedBox(
+          height: _qrCodeSize(context: context),
+          width: _qrCodeSize(context: context),
+          child: _image,
         )
       ],
     );

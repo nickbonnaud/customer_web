@@ -1,4 +1,3 @@
-import 'package:customer_web/widgets/intro_row/cubit/intro_row_loaded_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,29 +30,21 @@ class _PhoneImageState extends State<PhoneImage> with SingleTickerProviderStateM
       begin: const Offset(0, .05),
       end: const Offset(0, -.05)
     ).animate(_curvedAnimation);
+
+    _animationController.repeat(reverse: true);
   }
   
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<IntroRowLoadedCubit, bool>(
-      listener: ((context, state) => _animationController.repeat(reverse: true)),
-      builder: (context, introLoaded) {
-        return AnimatedOpacity(
-          opacity: introLoaded ? 1 : 0, 
-          duration: const Duration(seconds: 1),
-          child: AnimatedContainer(
-            height: introLoaded ? _size() : .25.sh,
-            duration: const Duration(seconds: 1),
-            child: SlideTransition(
-              position: _animationOffset,
-              child: BlocProvider<ImageSwitcherCubit>(
-                create: (_) => ImageSwitcherCubit(),
-                child: ImageSwitcher(),
-              ),
-            ),
-          ),
-        );
-      },
+    return SizedBox(
+      height: _size(),
+      child: SlideTransition(
+        position: _animationOffset,
+        child: BlocProvider<ImageSwitcherCubit>(
+          create: (_) => ImageSwitcherCubit(),
+          child: ImageSwitcher(),
+        ),
+      ),
     );
   }
 
