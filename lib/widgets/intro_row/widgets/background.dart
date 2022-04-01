@@ -13,7 +13,7 @@ class Background extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: const RiveAnimation.asset(
-        'rive/main_rive.riv',
+        'rive/background.riv',
         artboard: 'background',
         animations: ['main'],
         fit: BoxFit.cover,

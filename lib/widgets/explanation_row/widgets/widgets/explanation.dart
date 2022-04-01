@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
-import '../bloc/explanation_bloc.dart';
+import '../../bloc/explanation_bloc.dart';
 
 class Explanation extends StatefulWidget {
   final String _text;

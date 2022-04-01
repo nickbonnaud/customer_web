@@ -16,26 +16,36 @@ class FooterRow extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
-      color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          BlocProvider<ContactButtonCubit>(
-            create: (_) => ContactButtonCubit(),
-            child: const ContactButton(),
+    return Column(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width,
+          color: Colors.white,
+          height: 100.h
+        ),
+        const Divider(),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BlocProvider<ContactButtonCubit>(
+                create: (_) => ContactButtonCubit(),
+                child: const ContactButton(),
+              ),
+              BlocProvider<DashboardButtonCubit>(
+                create: (_) => DashboardButtonCubit(),
+                child: const DashboardButton(),
+              ),
+              BlocProvider<PartnerButtonCubit>(
+                create: (_) => PartnerButtonCubit(),
+                child: const PartnerButton(),
+              ),
+            ],
           ),
-          BlocProvider<DashboardButtonCubit>(
-            create: (_) => DashboardButtonCubit(),
-            child: const DashboardButton(),
-          ),
-          BlocProvider<PartnerButtonCubit>(
-            create: (_) => PartnerButtonCubit(),
-            child: const PartnerButton(),
-          ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }

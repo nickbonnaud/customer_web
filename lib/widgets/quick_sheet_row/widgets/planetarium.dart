@@ -12,7 +12,7 @@ class Planetarium extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width * (2/3),
       child: const RiveAnimation.asset(
-        'rive/main_rive.riv',
+        'rive/planetarium.riv',
         artboard: 'planetarium',
         animations: ['main'],
         fit: BoxFit.fitWidth,

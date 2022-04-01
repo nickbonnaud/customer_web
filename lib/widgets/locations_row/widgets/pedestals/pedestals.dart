@@ -37,7 +37,7 @@ class Pedestals extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width * (2/3),
               child: const RiveAnimation.asset(
-                'rive/main_rive.riv',
+                'rive/pedestals.riv',
                 artboard: 'pedestals',
                 animations: ['pedestals_animation'],
                 fit: BoxFit.fitWidth,

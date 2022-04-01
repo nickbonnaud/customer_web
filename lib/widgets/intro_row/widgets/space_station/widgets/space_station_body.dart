@@ -16,7 +16,7 @@ class SpaceStationBody extends StatelessWidget {
       height: _size(context: context),
       width: _size(context: context),
       child: RiveAnimation.asset(
-        'rive/main_rive.riv',
+        'rive/space_station.riv',
         artboard: 'space_station',
         animations: const ['ufos'],
         fit: BoxFit.contain,

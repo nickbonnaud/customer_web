@@ -16,7 +16,7 @@ class PlanetsBody extends StatelessWidget {
       height: _size(context: context),
       width: _size(context: context),
       child: RiveAnimation.asset(
-        'rive/main_rive.riv',
+        'rive/earth_moon.riv',
         artboard: 'earth_moon',
         animations: const ['moon_orbit'],
         fit: BoxFit.contain,

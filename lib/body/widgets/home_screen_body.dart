@@ -1,5 +1,4 @@
 import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
-import 'package:customer_web/widgets/explanation_row/bloc/explanation_bloc.dart';
 import 'package:customer_web/widgets/explanation_row/explanation_row.dart';
 import 'package:customer_web/widgets/features_row/features_row.dart';
 import 'package:customer_web/widgets/footer_row/footer_row.dart';
@@ -12,7 +11,6 @@ import 'package:customer_web/widgets/quick_sheet_row/quick_sheet_row.dart';
 import 'package:customer_web/widgets/splash_overlay/splash_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreenBody extends StatefulWidget {
 
@@ -41,7 +39,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
     
     return Stack(
       children: [
-        _scrollBody(),
+        _body(),
         const SplashOverlay()
       ],
     );
@@ -54,7 +52,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
     super.dispose();
   }
 
-  Widget _scrollBody() {
+  Widget _body() {
     return BlocBuilder<IntroWidgetsLoadedBloc, IntroWidgetsLoadedState>(
       buildWhen: (previous, current) => !previous.loadingLogoLoaded && current.loadingLogoLoaded,
       builder: (context, state) {
@@ -65,7 +63,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
               shrinkWrap: true,
               controller: _scrollController,
               slivers: [
-                _appBar(),
+                const MainAppBar(),
                 const SliverToBoxAdapter(
                   child: IntroRow()
                 ),
@@ -76,10 +74,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
                   child: QuickSheetRow(),
                 ),
                 SliverToBoxAdapter(
-                  child: BlocProvider<ExplanationBloc>(
-                    create: (_) => ExplanationBloc(),
-                    child: ExplanationRow(mainScrollKey: _mainScrollKey),
-                  ),
+                  child: ExplanationRow(mainScrollKey: _mainScrollKey),
                 ),
                 SliverToBoxAdapter(
                   child: LocationsRow(mainScrollKey: _mainScrollKey),
@@ -87,27 +82,13 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
                 SliverToBoxAdapter(
                   child: HowToRow(mainScrollKey: _mainScrollKey)
                 ),
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.white,
-                        height: 100.h
-                      ),
-                      const Divider(),
-                      const FooterRow()
-                    ],
-                  ),
+                const SliverToBoxAdapter(
+                  child: FooterRow()
                 )
               ],
             );
       }
     );
-  }
-
-  Widget _appBar() {
-    return const MainAppBar();
   }
 
   void _handleScrollNotification() {

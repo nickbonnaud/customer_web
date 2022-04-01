@@ -20,7 +20,7 @@ class SpaceShipBody extends StatelessWidget {
       child: Transform.rotate(
         angle: math.pi / 4,
         child: RiveAnimation.asset(
-          'rive/main_rive.riv',
+          'rive/rocket.riv',
           artboard: 'rocket',
           fit: BoxFit.contain,
           animations: const ['flame'],
