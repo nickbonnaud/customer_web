@@ -15,27 +15,19 @@ import 'widgets/how_to_text/how_to_text.dart';
 class HowToBody extends StatefulWidget {
   final GlobalKey _mainScrollKey;
 
-  const HowToBody({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const HowToBody({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
 
   @override
   State<HowToBody> createState() => _HowToBodyState();
 }
 
 class _HowToBodyState extends State<HowToBody> {
-  static const double _enterMinHeight = 400;
-  
   final GlobalKey _bodyKey = GlobalKey();
+  final VisibilityFinder _visibilityFinder = const VisibilityFinder(enterAnimationMinHeight: 400);
 
-  late VisibilityFinder _visibilityFinder;
-
-  Timer? _timer;
-  
-  @override
-  void initState() {
-    super.initState();
-    _visibilityFinder = VisibilityFinder(parentKey: widget._mainScrollKey, childKey: _bodyKey, enterAnimationMinHeight: _enterMinHeight);
-  }
+  late Timer _timer;
   
   @override
   Widget build(BuildContext context) {
@@ -58,7 +50,7 @@ class _HowToBodyState extends State<HowToBody> {
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -69,12 +61,12 @@ class _HowToBodyState extends State<HowToBody> {
       children: [
         Column(
           children: [
-            HowToImage(),
-            HowToDots(),
+            const HowToImage(),
+            const HowToDots(),
             SizedBox(height: 10.h)
           ],
         ),
-        Expanded(
+        const Expanded(
           child: HowToText()
         )
       ],
@@ -85,17 +77,17 @@ class _HowToBodyState extends State<HowToBody> {
     return Column(
       key: _bodyKey,
       children: [
-        HowToImage(),
-        HowToDots(),
+        const HowToImage(),
+        const HowToDots(),
         SizedBox(height: 30.h),
-        HowToText(),
+        const HowToText(),
         SizedBox(height: 20.h),
       ],
     );
   }
 
   void _updateScroll({required double absoluteOffset}) {
-    bool sectionCurrentlyVisible = _visibilityFinder.isVisible();
+    bool sectionCurrentlyVisible = _visibilityFinder.isVisible(parentKey: widget._mainScrollKey, childKey: _bodyKey);
     bool sectionWasVisible = BlocProvider.of<HowToBloc>(context).state.isSectionVisible;
 
     if (sectionCurrentlyVisible != sectionWasVisible) {
@@ -110,13 +102,12 @@ class _HowToBodyState extends State<HowToBody> {
   }
 
   void _play() {
-    _timer ??= Timer.periodic(const Duration(seconds: 8), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 8), (timer) {
       BlocProvider.of<HowToBloc>(context).add(IndexChanged());
     });
   }
 
   void _pause() {
-    _timer?.cancel();
-    _timer = null;
+    _timer.cancel();
   }
 }

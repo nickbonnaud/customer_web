@@ -1,38 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
-class Planetarium extends StatefulWidget {
+class Planetarium extends StatelessWidget {
 
-  @override
-  State<Planetarium> createState() => _PlanetariumState();
-}
-
-class _PlanetariumState extends State<Planetarium> {
-  late RiveAnimationController _riveAnimationController;
-
-  @override
-  void initState() {
-    super.initState();
-    _riveAnimationController = OneShotAnimation('main');
-  }
+  const Planetarium({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width * (2/3),
-      child: RiveAnimation.asset(
+      child: const RiveAnimation.asset(
         'rive/main_rive.riv',
         artboard: 'planetarium',
-        controllers: [_riveAnimationController],
+        animations: ['main'],
         fit: BoxFit.fitWidth,
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _riveAnimationController.dispose();
-    super.dispose();
   }
 }

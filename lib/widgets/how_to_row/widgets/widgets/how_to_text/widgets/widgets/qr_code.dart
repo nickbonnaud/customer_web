@@ -4,6 +4,9 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 
 class QrCode extends StatelessWidget {
 
+  const QrCode({Key? key})
+    : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return SizedBox(

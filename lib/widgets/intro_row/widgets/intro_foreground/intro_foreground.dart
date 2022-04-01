@@ -11,6 +11,9 @@ import 'widgets/phone_image/phone_image.dart';
 
 class IntroForeground extends StatelessWidget {
 
+  const IntroForeground({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -28,15 +31,15 @@ class IntroForeground extends StatelessWidget {
 
   Widget _smallScreenBody() {
     return Column(
-       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IntroLogo(),
+        const IntroLogo(),
         SizedBox(height: 10.h),
-        CallToActionText(),
+        const CallToActionText(),
         SizedBox(height: 30.h),
-        PhoneImage(),
+        const PhoneImage(),
         SizedBox(height: 30.h),
-        DownloadButton()
+        const DownloadButton()
       ],
     );
   }
@@ -45,18 +48,18 @@ class IntroForeground extends StatelessWidget {
     return Row(
       children: [
         SizedBox(width: .22.sw),
-        PhoneImage(),
+        const PhoneImage(),
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IntroLogo(),
+                const IntroLogo(),
                 SizedBox(height: 10.h),
-                CallToActionText(),
+                const CallToActionText(),
                 SizedBox(height: 10.h),
-                CallToActionQR(),
+                const CallToActionQR(),
                 SizedBox(height: 150.h,)
               ],
             ),

@@ -7,6 +7,9 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 
 class CallToActionQR extends StatefulWidget {
 
+  const CallToActionQR({Key? key})
+    : super(key: key);
+  
   @override
   State<CallToActionQR> createState() => _CallToActionQRState();
 }

@@ -8,11 +8,12 @@ import 'bloc/receipt_image_parallax_bloc.dart';
 import 'widgets/receipt_image.dart';
 
 class ReceiptFeature extends StatelessWidget {
-  final TextSizer _textSizer = TextSizer();
+  final TextSizer _textSizer = const TextSizer();
   final GlobalKey _mainScrollKey;
 
-  ReceiptFeature({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const ReceiptFeature({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

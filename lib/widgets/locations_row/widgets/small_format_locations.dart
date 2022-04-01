@@ -14,11 +14,13 @@ class SmallFormatLocations extends StatelessWidget {
   const SmallFormatLocations({
     required GlobalKey mainScrollKey,
     required String titleText,
-    required String bodyText
+    required String bodyText,
+    Key? key
   })
     : _mainScrollKey = mainScrollKey,
       _titleText = titleText,
-      _bodyText = bodyText;
+      _bodyText = bodyText,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class SmallFormatLocations extends StatelessWidget {
             height: MediaQuery.of(context).size.width * (2/3),
             child: Stack(
               children: [
-                LocationsBackground(),
+                const LocationsBackground(),
                 Pedestals(mainScrollKey: _mainScrollKey)
               ],
             ),

@@ -6,12 +6,15 @@ import 'widgets/space_station_body.dart';
 
 class SpaceStation extends StatelessWidget {
 
+  const SpaceStation({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
       bottom: 40.h,
       left: _left(context: context),
-      child: SpaceStationBody()
+      child: const SpaceStationBody()
     );
   }
 

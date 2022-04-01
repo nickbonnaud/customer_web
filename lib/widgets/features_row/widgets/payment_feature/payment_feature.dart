@@ -7,11 +7,12 @@ import 'bloc/payment_feature_parallax_bloc.dart';
 import 'widgets/payment_feature_image.dart';
 
 class PaymentFeature extends StatelessWidget {
-  final TextSizer _textSizer = TextSizer();
+  final TextSizer _textSizer = const TextSizer();
   final GlobalKey _mainScrollKey;
 
-  PaymentFeature({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const PaymentFeature({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

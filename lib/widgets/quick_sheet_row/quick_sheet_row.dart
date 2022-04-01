@@ -8,6 +8,9 @@ class QuickSheetRow extends StatelessWidget {
   static const String _titleText = "At your fingertips";
   static const String _bodyText = "View, request, or pay live bills. Find nearby businesses, see your active locations.";
   
+  const QuickSheetRow({Key? key})
+    : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     if (ResponsiveWrapper.of(context).isSmallerThan(TABLET)) {

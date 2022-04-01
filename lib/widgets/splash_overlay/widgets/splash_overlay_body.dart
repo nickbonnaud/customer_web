@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashOverlayBody extends StatefulWidget {
 
+  const SplashOverlayBody({Key? key})
+    : super(key: key);
+  
   @override
   State<SplashOverlayBody> createState() => _SplashOverlayBodyState();
 }
@@ -33,6 +36,7 @@ class _SplashOverlayBodyState extends State<SplashOverlayBody> with SingleTicker
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<IntroWidgetsLoadedBloc, IntroWidgetsLoadedState>(
+      buildWhen: (previous, current) => !previous.widgetsLoaded && current.widgetsLoaded,
       builder: (context, state) {
         return AnimatedOpacity(
           opacity: state.widgetsLoaded ? 0 : 1,
@@ -40,8 +44,8 @@ class _SplashOverlayBodyState extends State<SplashOverlayBody> with SingleTicker
           onEnd: () => BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(OverlayAnimationPlayed()),
           child: Container(
             color: Colors.white,
-            width: state.overlayAnimationPlayed ? 0 : MediaQuery.of(context).size.width,
-            height: state.overlayAnimationPlayed ? 0 : MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             child: Center(
               child: _logo(),
             )

@@ -11,24 +11,28 @@ import 'widgets/partner_button/partner_button.dart';
 
 class FooterRow extends StatelessWidget {
   
+  const FooterRow({Key? key})
+    : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
+      color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           BlocProvider<ContactButtonCubit>(
             create: (_) => ContactButtonCubit(),
-            child: ContactButton(),
+            child: const ContactButton(),
           ),
           BlocProvider<DashboardButtonCubit>(
             create: (_) => DashboardButtonCubit(),
-            child: DashboardButton(),
+            child: const DashboardButton(),
           ),
           BlocProvider<PartnerButtonCubit>(
             create: (_) => PartnerButtonCubit(),
-            child: PartnerButton(),
+            child: const PartnerButton(),
           ),
         ],
       ),

@@ -10,11 +10,12 @@ import 'widgets/notification_screen/bloc/notification_screen_parallax_bloc.dart'
 import 'widgets/notification_screen/notification_screen.dart';
 
 class ShowBillFeatures extends StatelessWidget {
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
   final GlobalKey _mainScrollKey;
 
-  ShowBillFeatures({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const ShowBillFeatures({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

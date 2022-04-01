@@ -7,6 +7,9 @@ import '../../bloc/how_to_bloc.dart';
 
 class HowToImage extends StatelessWidget {
 
+  const HowToImage({Key? key})
+    : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return SizedBox(

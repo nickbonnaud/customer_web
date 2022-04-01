@@ -7,28 +7,47 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 import '../../bloc/how_to_bloc.dart';
 
 class HowToDots extends StatelessWidget {
-  late final List<double> _leftOffsets;
+  const HowToDots({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
-    _setDots(context: context);
     return SizedBox(
       width: _containerWidth(context: context) + (2 * _dotSize(context: context)),
       height: _dotSize(context: context) + 5.w,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w),
-        child: Stack(
-          children: _dots(context: context)
-            ..add(_activeDot()),
-        )
-      )
+        child: LayoutBuilder(
+          builder:(context, constraints) {
+            List<double> dotPositions = _setDotPositions(context: context, width: constraints.maxWidth);
+            return Stack(
+              children: _dots(context: context, dotPositions: dotPositions)
+                ..add(_activeDot(dotPositions: dotPositions))
+            );
+          },
+        ),
+      ),
     );
   }
 
-  List<Widget> _dots({required BuildContext context}) {
-    return List.generate(_leftOffsets.length, (index) {      
+  List<double> _setDotPositions({required BuildContext context, required double width}) {
+    double segmentWidth = (width - (_dotSize(context: context) * HowToBloc.imageAssets.length)) / (HowToBloc.imageAssets.length - 1);
+    List<double> dotPositions = [];
+    
+    HowToBloc.imageAssets.asMap().forEach((index, _) {
+      dotPositions.add(index == 0
+        ? 0
+        : dotPositions[index - 1] + _dotSize(context: context) + segmentWidth
+      );
+    });
+
+    return dotPositions;
+  }
+
+  List<Widget> _dots({required List<double> dotPositions, required BuildContext context}) {
+    return List.generate(dotPositions.length, (index) {      
       return Positioned(
-        left: _leftOffsets[index],
+        left: dotPositions[index],
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
@@ -50,12 +69,12 @@ class HowToDots extends StatelessWidget {
     });
   }
 
-  Widget _activeDot() {
+  Widget _activeDot({required List<double> dotPositions}) {
     return BlocBuilder<HowToBloc, HowToState>(
       builder: (context, state) {
         return AnimatedPositioned(
           curve: Curves.easeIn,
-          left: _leftOffsets[state.switcherIndex % _leftOffsets.length],
+          left: dotPositions[state.switcherIndex % dotPositions.length],
           duration: const Duration(seconds: 1),
           child: Container(
             width: _dotSize(context: context),
@@ -91,18 +110,6 @@ class HowToDots extends StatelessWidget {
       return 17.w;
     }
     return 15.w;
-  }
-
-  void _setDots({required BuildContext context}) {
-    _leftOffsets = [];
-    double segmentWidth = (_containerWidth(context: context) - (_dotSize(context: context) * HowToBloc.imageAssets.length)) / (HowToBloc.imageAssets.length - 1);
-    
-    HowToBloc.imageAssets.asMap().forEach((index, _) {
-      _leftOffsets.add(index == 0
-        ? 0
-        : _leftOffsets[index - 1] + _dotSize(context: context) + segmentWidth
-      );
-    });
   }
 
   void _dotTapped({required BuildContext context, required int index}) {

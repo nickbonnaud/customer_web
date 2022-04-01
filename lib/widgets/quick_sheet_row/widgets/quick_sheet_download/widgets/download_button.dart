@@ -5,6 +5,9 @@ import 'package:customer_web/themes/global_colors.dart';
 
 class DownloadButton extends StatelessWidget {
   
+  const DownloadButton({Key? key})
+    : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(

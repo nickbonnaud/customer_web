@@ -6,11 +6,12 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 import 'widgets/business_screen_image.dart';
 
 class BusinessScreen extends StatelessWidget {
-  final TextSizer _textSizer = TextSizer();
+  final TextSizer _textSizer = const TextSizer();
   final GlobalKey _mainScrollKey;
 
-  BusinessScreen({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const BusinessScreen({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

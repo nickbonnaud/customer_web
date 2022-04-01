@@ -6,13 +6,17 @@ import 'widgets/splash_overlay_body.dart';
 
 class SplashOverlay extends StatelessWidget {
 
+  const SplashOverlay({Key? key})
+    : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<IntroWidgetsLoadedBloc, IntroWidgetsLoadedState>(
+      buildWhen: (previous, current) => !previous.overlayAnimationPlayed && current.overlayAnimationPlayed,
       builder: (context, state) {
         return state.overlayAnimationPlayed
           ? Container()
-          : SplashOverlayBody();
+          : const SplashOverlayBody();
       }
     );
   }

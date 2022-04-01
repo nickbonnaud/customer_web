@@ -10,6 +10,9 @@ import 'cubit/contact_button_cubit.dart';
 
 class ContactButton extends StatefulWidget {
 
+  const ContactButton({Key? key})
+    : super(key: key);
+  
   @override
   State<ContactButton> createState() => _ContactButtonState();
 }

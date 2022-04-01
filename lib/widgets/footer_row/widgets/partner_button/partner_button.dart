@@ -8,6 +8,9 @@ import 'cubit/partner_button_cubit.dart';
 
 class PartnerButton extends StatefulWidget {
 
+  const PartnerButton({Key? key})
+    : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _PartnerButtonState();
 }

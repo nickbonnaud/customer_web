@@ -10,9 +10,10 @@ class LargeFormatQuickSheet extends StatelessWidget {
   final String _titleText;
   final String _bodyText;
 
-  const LargeFormatQuickSheet({required String titleText, required String bodyText})
+  const LargeFormatQuickSheet({required String titleText, required String bodyText, Key? key})
     : _titleText = titleText,
-      _bodyText = bodyText;
+      _bodyText = bodyText,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class LargeFormatQuickSheet extends StatelessWidget {
       color: const Color.fromRGBO(248, 246, 246, 100),
       child: Stack(
         children: [
-          Planetarium(),
+          const Planetarium(),
           _text(context: context),
           _downloadAction(context: context)
         ],
@@ -54,7 +55,7 @@ class LargeFormatQuickSheet extends StatelessWidget {
       right: 20.w,
       child: SizedBox(
         width: .35.sw,
-        child: QuickSheetDownload(),
+        child: const QuickSheetDownload(),
       ),
     );
   }

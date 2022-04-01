@@ -6,6 +6,9 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 
 class IntroLogo extends StatefulWidget {
 
+  const IntroLogo({Key? key})
+    : super(key: key);
+
   @override
   State<IntroLogo> createState() => _IntroLogoState();
 }

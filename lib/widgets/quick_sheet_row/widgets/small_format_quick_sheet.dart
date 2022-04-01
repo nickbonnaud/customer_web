@@ -10,9 +10,10 @@ class SmallFormatQuickSheet extends StatelessWidget {
   final String _titleText;
   final String _bodyText;
 
-  const SmallFormatQuickSheet({required String titleText, required String bodyText})
+  const SmallFormatQuickSheet({required String titleText, required String bodyText, Key? key})
     : _titleText = titleText,
-      _bodyText = bodyText;
+      _bodyText = bodyText,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class SmallFormatQuickSheet extends StatelessWidget {
             height: MediaQuery.of(context).size.width * (2/3),
             child: Stack(
               children: [
-                Planetarium(),
+                const Planetarium(),
                 _downloadActionLarge(context: context)
               ],
             ),
@@ -85,7 +86,7 @@ class SmallFormatQuickSheet extends StatelessWidget {
       right: 20.w,
       child: SizedBox(
         width: _downloadWidth(context: context),
-        child: QuickSheetDownload(),
+        child: const QuickSheetDownload(),
       ),
     );
   }
@@ -103,7 +104,7 @@ class SmallFormatQuickSheet extends StatelessWidget {
     if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_MOBILE')) {
       return SizedBox(
         width: _downloadWidth(context: context),
-        child: QuickSheetDownload(),
+        child: const QuickSheetDownload(),
       );
     }
     return Container();

@@ -8,34 +8,21 @@ import 'package:transparent_image/transparent_image.dart';
 
 import '../bloc/payment_feature_parallax_bloc.dart';
 
-class PaymentFeatureImage extends StatefulWidget {
-  final GlobalKey _mainScrollKey;
-
-  const PaymentFeatureImage({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
-
-  @override
-  State<PaymentFeatureImage> createState() => _PaymentFeatureImageState();
-}
-
-class _PaymentFeatureImageState extends State<PaymentFeatureImage> {
+class PaymentFeatureImage extends StatelessWidget {
   static const double _initialOffset = 100;
   final GlobalKey _imageKey = GlobalKey();
-
-  late PaymentFeatureParallaxBloc _parallaxBloc;
-  late VisibilityFinder _visibilityFinder;
-
-  @override
-  void initState() {
-    super.initState();
-    _parallaxBloc = BlocProvider.of<PaymentFeatureParallaxBloc>(context);
-    _visibilityFinder = VisibilityFinder(parentKey: widget._mainScrollKey, childKey: _imageKey);
-  }
+  final VisibilityFinder _visibilityFinder = const VisibilityFinder();
   
+  final GlobalKey _mainScrollKey;
+
+  PaymentFeatureImage({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ScrollWatcherCubit, double>(
-      listener: (context, absoluteOffset) => _updateScroll(absoluteOffset: absoluteOffset),
+      listener: (context, absoluteOffset) => _updateScroll(context: context, absoluteOffset: absoluteOffset),
       child: SizedBox(
         height: .7.sh,
         width: ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
@@ -67,18 +54,12 @@ class _PaymentFeatureImageState extends State<PaymentFeatureImage> {
     );
   }
 
-  @override
-  void dispose() {
-    _parallaxBloc.close();
-    super.dispose();
-  }
+  void _updateScroll({required BuildContext context, required double absoluteOffset}) {
+    BlocProvider.of<PaymentFeatureParallaxBloc>(context).add(CurrentPositionChanged(currentPosition: absoluteOffset));
 
-  void _updateScroll({required double absoluteOffset}) {
-    _parallaxBloc.add(CurrentPositionChanged(currentPosition: absoluteOffset));
-
-    bool imageVisible = _visibilityFinder.isVisible();
-    if (imageVisible != _parallaxBloc.state.isImageVisible) {
-      _parallaxBloc.add(ImageVisibilityChanged(
+    bool imageVisible = _visibilityFinder.isVisible(parentKey: _mainScrollKey, childKey: _imageKey);
+    if (imageVisible != BlocProvider.of<PaymentFeatureParallaxBloc>(context).state.isImageVisible) {
+      BlocProvider.of<PaymentFeatureParallaxBloc>(context).add(ImageVisibilityChanged(
         isImageVisible: imageVisible,
         entryPosition: imageVisible ? absoluteOffset : null
       ));

@@ -1,38 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
-class Background extends StatefulWidget {
+class Background extends StatelessWidget {
 
-  @override
-  State<StatefulWidget> createState() => _BackgroundState();
-}
+  const Background({Key? key})
+    : super(key: key);
 
-class _BackgroundState extends State<Background> {
-  late RiveAnimationController _riveAnimationController;
-  
-  @override
-  void initState() {
-    super.initState();
-    _riveAnimationController = OneShotAnimation('main');
-  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      child: RiveAnimation.asset(
+      child: const RiveAnimation.asset(
         'rive/main_rive.riv',
         artboard: 'background',
-        controllers: [_riveAnimationController],
+        animations: ['main'],
         fit: BoxFit.cover,
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _riveAnimationController.dispose();
-    super.dispose();
   }
 }

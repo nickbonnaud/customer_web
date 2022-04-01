@@ -7,11 +7,14 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'themes/main_theme.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final AppRouter _router = AppRouter();
+  final AppRouter _router = const AppRouter();
+
+  const MyApp({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {

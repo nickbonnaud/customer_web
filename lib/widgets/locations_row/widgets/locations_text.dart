@@ -7,9 +7,10 @@ class LocationsText extends StatelessWidget {
   final String _titleText;
   final String _bodyText;
 
-  const LocationsText({required String titleText, required String bodyText})
+  const LocationsText({required String titleText, required String bodyText, Key? key})
     : _titleText = titleText,
-      _bodyText = bodyText;
+      _bodyText = bodyText,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

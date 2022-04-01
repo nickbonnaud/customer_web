@@ -3,6 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
 class CallToActionText extends StatelessWidget {
+
+  const CallToActionText({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {

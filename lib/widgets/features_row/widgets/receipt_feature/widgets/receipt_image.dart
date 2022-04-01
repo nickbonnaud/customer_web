@@ -8,34 +8,21 @@ import 'package:transparent_image/transparent_image.dart';
 
 import '../bloc/receipt_image_parallax_bloc.dart';
 
-class ReceiptImage extends StatefulWidget {
-  final GlobalKey _mainScrollKey;
-
-  const ReceiptImage({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
-
-  @override
-  State<ReceiptImage> createState() => _ReceiptImageState();
-}
-
-class _ReceiptImageState extends State<ReceiptImage> {
+class ReceiptImage extends StatelessWidget {
   static const double _initialOffset = 200;
   final GlobalKey _imageKey = GlobalKey();
-  
-  late ReceiptImageParallaxBloc _parallaxBloc;
-  late VisibilityFinder _visibilityFinder;
-  
-  @override
-  void initState() {
-    super.initState();
-    _parallaxBloc = BlocProvider.of<ReceiptImageParallaxBloc>(context);
-    _visibilityFinder = VisibilityFinder(parentKey: widget._mainScrollKey, childKey: _imageKey);
-  }
+  final VisibilityFinder _visibilityFinder = const VisibilityFinder();
+
+  final GlobalKey _mainScrollKey;
+
+  ReceiptImage({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return BlocListener<ScrollWatcherCubit, double>(
-      listener: (context, absoluteOffset) => _updateScroll(absoluteOffset: absoluteOffset),
+      listener: (context, absoluteOffset) => _updateScroll(context: context, absoluteOffset: absoluteOffset),
       child: SizedBox(
         height: .6.sh,
         width: .2.sw,
@@ -66,18 +53,12 @@ class _ReceiptImageState extends State<ReceiptImage> {
     );
   }
 
-  @override
-  void dispose() {
-    _parallaxBloc.close();
-    super.dispose();
-  }
+  void _updateScroll({required BuildContext context, required double absoluteOffset}) {
+    BlocProvider.of<ReceiptImageParallaxBloc>(context).add(CurrentPositionChanged(currentPosition: absoluteOffset));
 
-  void _updateScroll({required double absoluteOffset}) {
-    _parallaxBloc.add(CurrentPositionChanged(currentPosition: absoluteOffset));
-
-    bool imageVisible = _visibilityFinder.isVisible();
-    if (imageVisible != _parallaxBloc.state.isImageVisible) {
-      _parallaxBloc.add(ImageVisibilityChanged(
+    bool imageVisible = _visibilityFinder.isVisible(parentKey: _mainScrollKey, childKey: _imageKey);
+    if (imageVisible != BlocProvider.of<ReceiptImageParallaxBloc>(context).state.isImageVisible) {
+      BlocProvider.of<ReceiptImageParallaxBloc>(context).add(ImageVisibilityChanged(
         isImageVisible: imageVisible,
         entryPosition: imageVisible ? absoluteOffset : null
       ));

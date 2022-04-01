@@ -7,49 +7,30 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:rive/rive.dart';
 
-class SpaceShipBody extends StatefulWidget {
+class SpaceShipBody extends StatelessWidget {
 
-  @override
-  State<SpaceShipBody> createState() => _SpaceShipBodyState();
-}
-
-class _SpaceShipBodyState extends State<SpaceShipBody> {
-  late final RiveAnimationController _riveAnimationController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _riveAnimationController = OneShotAnimation(
-      'flame',
-      onStart: () => BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(SpaceShipLoaded()),
-    );
-  }
+  const SpaceShipBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _size(),
-      width: _size(),
+      height: _size(context: context),
+      width: _size(context: context),
       child: Transform.rotate(
         angle: math.pi / 4,
         child: RiveAnimation.asset(
           'rive/main_rive.riv',
           artboard: 'rocket',
-          controllers: [_riveAnimationController],
           fit: BoxFit.contain,
+          animations: const ['flame'],
+          onInit: (_) => BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(SpaceShipLoaded())
         ),
       ),
     );
   }
 
-  @override
-  void dispose() {
-    _riveAnimationController.dispose();
-    super.dispose();
-  }
-
-  double _size() {
+  double _size({required BuildContext context}) {
     if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
       return .6.sw;
     } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_MOBILE')) {

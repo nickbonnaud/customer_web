@@ -8,6 +8,9 @@ import 'widgets/image_switcher.dart';
 
 class PhoneImage extends StatefulWidget {
 
+  const PhoneImage({Key? key})
+    : super(key: key);
+
   @override
   State<PhoneImage> createState() => _PhoneImageState();
 }
@@ -42,7 +45,7 @@ class _PhoneImageState extends State<PhoneImage> with SingleTickerProviderStateM
         position: _animationOffset,
         child: BlocProvider<ImageSwitcherCubit>(
           create: (_) => ImageSwitcherCubit(),
-          child: ImageSwitcher(),
+          child: const ImageSwitcher(),
         ),
       ),
     );

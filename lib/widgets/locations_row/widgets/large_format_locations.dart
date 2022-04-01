@@ -14,11 +14,13 @@ class LargeFormatLocations extends StatelessWidget {
   const LargeFormatLocations({
     required GlobalKey mainScrollKey,
     required String titleText,
-    required String bodyText
+    required String bodyText,
+    Key? key
   })
     : _mainScrollKey = mainScrollKey,
       _titleText = titleText,
-      _bodyText = bodyText;
+      _bodyText = bodyText,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class LargeFormatLocations extends StatelessWidget {
       color: const Color.fromRGBO(248, 246, 246, 100),
       child: Stack(
         children: [
-          LocationsBackground(),
+          const LocationsBackground(),
           _text(context: context),
           Pedestals(mainScrollKey: _mainScrollKey)
         ],

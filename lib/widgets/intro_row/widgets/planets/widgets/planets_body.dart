@@ -5,50 +5,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:rive/rive.dart';
 
-class PlanetsBody extends StatefulWidget {
+class PlanetsBody extends StatelessWidget {
 
-  @override
-  State<PlanetsBody> createState() => _PlanetsBodyState();
-}
-
-class _PlanetsBodyState extends State<PlanetsBody> {
-  late final RiveAnimationController _riveAnimationController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _riveAnimationController = OneShotAnimation(
-      'moon_orbit',
-      onStart: () => BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(PlanetsLoaded()),
-    );
-  }
+  const PlanetsBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _size(),
-      width: _size(),
+      height: _size(context: context),
+      width: _size(context: context),
       child: RiveAnimation.asset(
         'rive/main_rive.riv',
         artboard: 'earth_moon',
-        controllers: [_riveAnimationController],
+        animations: const ['moon_orbit'],
         fit: BoxFit.contain,
+        onInit: (_) => BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(PlanetsLoaded()),
       )
     );
   }
 
-  @override
-  void dispose() {
-    _riveAnimationController.dispose();
-    super.dispose();
-  }
-
-  void _animationStarted() {
-    print('planets started');
-  }
-
-  double _size() {
+  double _size({required BuildContext context}) {
     if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
       return .55.sw;
     } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_MOBILE')) {

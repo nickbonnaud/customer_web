@@ -8,9 +8,12 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 import '../../../bloc/how_to_bloc.dart';
 
 class HowToText extends StatelessWidget {
-  final TextSizer _textSizer = TextSizer();
+  final TextSizer _textSizer = const TextSizer();
   final Duration _duration = const Duration(seconds: 1);
 
+  const HowToText({Key? key})
+    : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -54,7 +57,7 @@ class HowToText extends StatelessWidget {
           }
         ),
         SizedBox(height: 60.h),
-        DownloadAction()
+        const DownloadAction()
       ],
     );
   }

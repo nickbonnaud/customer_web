@@ -6,11 +6,12 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 import 'widgets/notification_screen_image.dart';
 
 class NotificationScreen extends StatelessWidget {
-  final TextSizer _textSizer = TextSizer();
+  final TextSizer _textSizer = const TextSizer();
   final GlobalKey _mainScrollKey;
 
-  NotificationScreen({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const NotificationScreen({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

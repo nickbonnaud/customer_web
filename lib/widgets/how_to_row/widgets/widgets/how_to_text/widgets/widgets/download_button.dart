@@ -5,6 +5,9 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 
 class DownloadButton extends StatelessWidget {
 
+  const DownloadButton({Key? key})
+    : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return SizedBox(

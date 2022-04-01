@@ -5,13 +5,16 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 import 'widgets/planets_body.dart';
 
 class Planets extends StatelessWidget {
+
+  const Planets({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return Positioned(
       top: _height(context: context),
       left: 0,
-      child: PlanetsBody()
+      child: const PlanetsBody()
     );
   }
 

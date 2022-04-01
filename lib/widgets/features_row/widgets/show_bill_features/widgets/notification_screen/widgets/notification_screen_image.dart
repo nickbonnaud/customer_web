@@ -8,32 +8,21 @@ import 'package:transparent_image/transparent_image.dart';
 
 import '../bloc/notification_screen_parallax_bloc.dart';
 
-class NotificationScreenImage extends StatefulWidget {
-  final GlobalKey _mainScrollKey;
-
-  const NotificationScreenImage({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
-
-  @override
-  State<NotificationScreenImage> createState() => _NotificationScreenImageState();
-}
-
-class _NotificationScreenImageState extends State<NotificationScreenImage> {
+class NotificationScreenImage extends StatelessWidget {
   static const double _initialOffset = 120;
   final GlobalKey _imageKey = GlobalKey();
+  final VisibilityFinder _visibilityFinder = const VisibilityFinder();
 
-  late VisibilityFinder _visibilityFinder;
-  
-  @override
-  void initState() {
-    super.initState();
-    _visibilityFinder = VisibilityFinder(parentKey: widget._mainScrollKey, childKey: _imageKey);
-  }
-  
+  final GlobalKey _mainScrollKey;
+
+  NotificationScreenImage({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ScrollWatcherCubit, double>(
-      listener: (context, absoluteOffset) => _updateScroll(absoluteOffset: absoluteOffset),
+      listener: (context, absoluteOffset) => _updateScroll(context: context, absoluteOffset: absoluteOffset),
       child: SizedBox(
         height: .6.sh,
         width: ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
@@ -64,10 +53,10 @@ class _NotificationScreenImageState extends State<NotificationScreenImage> {
     );
   }
 
-  void _updateScroll({required double absoluteOffset}) {
+  void _updateScroll({required BuildContext context, required double absoluteOffset}) {
     BlocProvider.of<NotificationScreenParallaxBloc>(context).add(CurrentPositionChanged(currentPosition: absoluteOffset));
 
-    bool imageVisible = _visibilityFinder.isVisible();
+    bool imageVisible = _visibilityFinder.isVisible(parentKey: _mainScrollKey, childKey: _imageKey);
     if (imageVisible != BlocProvider.of<NotificationScreenParallaxBloc>(context).state.isImageVisible) {
       BlocProvider.of<NotificationScreenParallaxBloc>(context).add(ImageVisibilityChanged(
         isImageVisible: imageVisible,

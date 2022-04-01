@@ -11,8 +11,9 @@ class LocationsRow extends StatelessWidget {
   static const String _bodyText = "Use at all your favorite businesses. Nova Pay is compatible with most payment systems.";
   final GlobalKey _mainScrollKey;
 
-  const LocationsRow({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const LocationsRow({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
 
     @override
   Widget build(BuildContext context) {

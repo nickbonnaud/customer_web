@@ -16,6 +16,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreenBody extends StatefulWidget {
 
+  const HomeScreenBody({Key? key})
+    : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _HomeScreenBodyState();
 }
@@ -39,7 +42,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
     return Stack(
       children: [
         _scrollBody(),
-        SplashOverlay()
+        const SplashOverlay()
       ],
     );
   }
@@ -53,6 +56,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
 
   Widget _scrollBody() {
     return BlocBuilder<IntroWidgetsLoadedBloc, IntroWidgetsLoadedState>(
+      buildWhen: (previous, current) => !previous.loadingLogoLoaded && current.loadingLogoLoaded,
       builder: (context, state) {
         return !state.loadingLogoLoaded
           ? Container()
@@ -62,13 +66,13 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
               controller: _scrollController,
               slivers: [
                 _appBar(),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: IntroRow()
                 ),
                 SliverToBoxAdapter(
                   child: FeaturesRow(mainScrollKey: _mainScrollKey),
                 ),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: QuickSheetRow(),
                 ),
                 SliverToBoxAdapter(
@@ -86,9 +90,13 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      SizedBox(height: 100.h),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        height: 100.h
+                      ),
                       const Divider(),
-                      FooterRow()
+                      const FooterRow()
                     ],
                   ),
                 )
@@ -99,7 +107,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
   }
 
   Widget _appBar() {
-    return MainAppBar();
+    return const MainAppBar();
   }
 
   void _handleScrollNotification() {

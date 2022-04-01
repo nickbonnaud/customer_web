@@ -8,34 +8,21 @@ import 'package:rive/rive.dart';
 
 import 'bloc/pedestals_parallax_bloc.dart';
 
-class Pedestals extends StatefulWidget {
+
+class Pedestals extends StatelessWidget {
+  final GlobalKey _sectionKey = GlobalKey();
+  final VisibilityFinder _visibilityFinder = const VisibilityFinder(enterAnimationMinHeight: 250);
+
   final GlobalKey _mainScrollKey;
 
-  const Pedestals({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
-
-  @override
-  State<StatefulWidget> createState() => _PedestalsState();
-}
-
-class _PedestalsState extends State<Pedestals> {
-  static const double _enterMinHeight = 250;
-  final GlobalKey _sectionKey = GlobalKey();
-  
-  late VisibilityFinder _visibilityFinder;
-  late RiveAnimationController _riveAnimationController;
-
-  @override
-  void initState() {
-    super.initState();
-    _visibilityFinder = VisibilityFinder(parentKey: widget._mainScrollKey, childKey: _sectionKey, enterAnimationMinHeight: _enterMinHeight);
-    _riveAnimationController = OneShotAnimation('pedestals_animation');
-  }
+  Pedestals({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<ScrollWatcherCubit, double>(
-      listener: (context, absoluteOffset) => _updateScroll(absoluteOffset: absoluteOffset),
+      listener: (context, absoluteOffset) => _updateScroll(context: context, absoluteOffset: absoluteOffset),
       child: BlocBuilder<PedestalsParallaxBloc, PedestalsParallaxState>(
         buildWhen: ((_, currentState) => currentState.isImageVisible),
         builder: (context, state) {
@@ -49,10 +36,10 @@ class _PedestalsState extends State<Pedestals> {
               key: _sectionKey,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width * (2/3),
-              child: RiveAnimation.asset(
+              child: const RiveAnimation.asset(
                 'rive/main_rive.riv',
                 artboard: 'pedestals',
-                controllers: [_riveAnimationController],
+                animations: ['pedestals_animation'],
                 fit: BoxFit.fitWidth,
               ),
             )
@@ -60,12 +47,6 @@ class _PedestalsState extends State<Pedestals> {
         }
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _riveAnimationController.dispose();
-    super.dispose();
   }
 
   double _initialOffset({required BuildContext context}) {
@@ -80,8 +61,8 @@ class _PedestalsState extends State<Pedestals> {
     ;
   }
   
-  void _updateScroll({required double absoluteOffset}) {
-    bool imageVisible = _visibilityFinder.isVisible();
+  void _updateScroll({required BuildContext context, required double absoluteOffset}) {
+    bool imageVisible = _visibilityFinder.isVisible(parentKey: _mainScrollKey, childKey: _sectionKey);
     bool visibilityChanged = false;
     
     if (imageVisible != BlocProvider.of<PedestalsParallaxBloc>(context).state.isImageVisible) {

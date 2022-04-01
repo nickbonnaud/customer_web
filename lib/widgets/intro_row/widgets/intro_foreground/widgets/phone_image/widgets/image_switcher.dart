@@ -8,6 +8,9 @@ import 'cubit/image_switcher_cubit.dart';
 
 class ImageSwitcher extends StatefulWidget {
 
+  const ImageSwitcher({Key? key})
+    : super(key: key);
+
   @override
   State<ImageSwitcher> createState() => _ImageSwitcherState();
 }

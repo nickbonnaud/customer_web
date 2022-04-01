@@ -8,32 +8,21 @@ import 'package:transparent_image/transparent_image.dart';
 
 import '../bloc/business_screen_parallax_bloc.dart';
 
-class BusinessScreenImage extends StatefulWidget {
-  final GlobalKey _mainScrollKey;
-
-  const BusinessScreenImage({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
-
-  @override
-  State<BusinessScreenImage> createState() => _BusinessScreenImageState();
-}
-
-class _BusinessScreenImageState extends State<BusinessScreenImage> {
+class BusinessScreenImage extends StatelessWidget {
   static const double _initialOffset = 75;
   final GlobalKey _imageKey = GlobalKey();
-  
-  late VisibilityFinder _visibilityFinder;
-  
-  @override
-  void initState() {
-    super.initState();
-    _visibilityFinder = VisibilityFinder(parentKey: widget._mainScrollKey, childKey: _imageKey);
-  }
+  final VisibilityFinder _visibilityFinder = const VisibilityFinder();
+
+  final GlobalKey _mainScrollKey;
+
+  BusinessScreenImage({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return BlocListener<ScrollWatcherCubit, double>(
-      listener: (context, absoluteOffset) => _updateScroll(absoluteOffset: absoluteOffset),
+      listener: (context, absoluteOffset) => _updateScroll(context: context, absoluteOffset: absoluteOffset),
       child: SizedBox(
         height: .6.sh,
         width: ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
@@ -64,10 +53,10 @@ class _BusinessScreenImageState extends State<BusinessScreenImage> {
     );
   }
 
-  void _updateScroll({required double absoluteOffset}) {
+  void _updateScroll({required BuildContext context, required double absoluteOffset}) {
     BlocProvider.of<BusinessScreenParallaxBloc>(context).add(CurrentPositionChanged(currentPosition: absoluteOffset));
 
-    bool imageVisible = _visibilityFinder.isVisible();
+    bool imageVisible = _visibilityFinder.isVisible(parentKey: _mainScrollKey, childKey: _imageKey);
     if (imageVisible != BlocProvider.of<BusinessScreenParallaxBloc>(context).state.isImageVisible) {
       BlocProvider.of<BusinessScreenParallaxBloc>(context).add(ImageVisibilityChanged(
         isImageVisible: imageVisible,

@@ -7,11 +7,12 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'bloc/explanation_bloc.dart';
 
 class ExplanationRow extends StatelessWidget {
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
   final GlobalKey _mainScrollKey;
 
-  ExplanationRow({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const ExplanationRow({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

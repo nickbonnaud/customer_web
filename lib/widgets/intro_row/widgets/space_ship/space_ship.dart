@@ -6,12 +6,15 @@ import 'widgets/space_ship_body.dart';
 
 class SpaceShip extends StatelessWidget {
 
+  const SpaceShip({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
       bottom: _height(context: context),
       right: _right(context: context),
-      child: SpaceShipBody()
+      child: const SpaceShipBody()
     );
   }
 

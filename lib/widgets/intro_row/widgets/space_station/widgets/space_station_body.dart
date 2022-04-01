@@ -5,46 +5,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:rive/rive.dart';
 
-class SpaceStationBody extends StatefulWidget {
+class SpaceStationBody extends StatelessWidget {
 
-  @override
-  State<SpaceStationBody> createState() => _SpaceStationBodyState();
-}
-
-class _SpaceStationBodyState extends State<SpaceStationBody> {
-  late final RiveAnimationController _riveAnimationController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _riveAnimationController = OneShotAnimation(
-      'ufos',
-      onStart: () => BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(SpaceStationLoaded()),
-    );
-  }
+  const SpaceStationBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _size(),
-      width: _size(),
+      height: _size(context: context),
+      width: _size(context: context),
       child: RiveAnimation.asset(
         'rive/main_rive.riv',
         artboard: 'space_station',
-        controllers: [_riveAnimationController],
+        animations: const ['ufos'],
         fit: BoxFit.contain,
+        onInit: (_) => BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(SpaceStationLoaded()),
       )
     );
   }
 
-  @override
-  void dispose() {
-    _riveAnimationController.dispose();
-    super.dispose();
-  }
-
-  double _size() {
+  double _size({required BuildContext context}) {
     if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
       return .65.sw;
     } else if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_MOBILE')) {

@@ -16,28 +16,28 @@ class Explanation extends StatefulWidget {
   const Explanation({
     required String text,
     required String animationPath,
-    required GlobalKey mainScrollKey
+    required GlobalKey mainScrollKey,
+    Key? key
   })
     : _text = text,
       _animationPath = animationPath,
-      _mainScrollKey = mainScrollKey;
+      _mainScrollKey = mainScrollKey,
+      super(key: key);
 
   @override
   State<Explanation> createState() => _ExplanationState();
 }
 
 class _ExplanationState extends State<Explanation> with SingleTickerProviderStateMixin {
-  final double _enterAnimationHeight = .4.sh;
+  final VisibilityFinder _visibilityFinder = VisibilityFinder(enterAnimationMinHeight: .4.sh);
   final GlobalKey _iconKey = GlobalKey();
 
   late AnimationController _iconController;
-  late VisibilityFinder _visibilityFinder;
   
   @override
   void initState() {
     super.initState();
     _iconController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    _visibilityFinder = VisibilityFinder(parentKey: widget._mainScrollKey, childKey: _iconKey, enterAnimationMinHeight: _enterAnimationHeight);
   }
   
   @override
@@ -118,7 +118,7 @@ class _ExplanationState extends State<Explanation> with SingleTickerProviderStat
   void _didEnterView() {
     if (_iconController.status != AnimationStatus.dismissed || BlocProvider.of<ExplanationBloc>(context).animationPlayed(animation: widget._animationPath)) return;
 
-    bool iconVisible = _visibilityFinder.isVisible();
+    bool iconVisible = _visibilityFinder.isVisible(parentKey: widget._mainScrollKey, childKey: _iconKey,);
 
     if (iconVisible) {
       BlocProvider.of<ExplanationBloc>(context).add(AnimationPlayed(animation: widget._animationPath));

@@ -10,8 +10,9 @@ import 'widgets/how_to_body.dart';
 class HowToRow extends StatelessWidget {
   final GlobalKey _mainScrollKey;
 
-  const HowToRow({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const HowToRow({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

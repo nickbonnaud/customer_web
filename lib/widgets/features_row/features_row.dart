@@ -9,8 +9,9 @@ import 'widgets/show_bill_features/show_bill_features.dart';
 class FeaturesRow extends StatelessWidget {
   final GlobalKey _mainScrollKey;
 
-  const FeaturesRow({required GlobalKey mainScrollKey})
-    : _mainScrollKey = mainScrollKey;
+  const FeaturesRow({required GlobalKey mainScrollKey, Key? key})
+    : _mainScrollKey = mainScrollKey,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
