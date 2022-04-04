@@ -7,11 +7,9 @@ import 'widgets/payment_feature/payment_feature.dart';
 import 'widgets/show_bill_features/show_bill_features.dart';
 
 class FeaturesRow extends StatelessWidget {
-  final GlobalKey _mainScrollKey;
-
-  const FeaturesRow({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  
+  const FeaturesRow({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -48,11 +46,11 @@ class FeaturesRow extends StatelessWidget {
             )
           ),
           SizedBox(height: 60.h),
-          PaymentFeature(mainScrollKey: _mainScrollKey),
+          const PaymentFeature(),
           SizedBox(height: 60.h),
-          ShowBillFeatures(mainScrollKey: _mainScrollKey),
+          const ShowBillFeatures(),
           SizedBox(height: 60.h),
-          ReceiptFeature(mainScrollKey: _mainScrollKey),
+          const ReceiptFeature(),
           SizedBox(height: 30.h)
         ],
       ),

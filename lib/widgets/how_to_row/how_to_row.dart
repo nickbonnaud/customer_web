@@ -8,11 +8,9 @@ import 'bloc/how_to_bloc.dart';
 import 'widgets/how_to_body.dart';
 
 class HowToRow extends StatelessWidget {
-  final GlobalKey _mainScrollKey;
 
-  const HowToRow({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  const HowToRow({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,7 @@ class HowToRow extends StatelessWidget {
             SizedBox(height: 40.h),
             BlocProvider<HowToBloc>(
               create: (_) => HowToBloc(),
-              child: HowToBody(mainScrollKey: _mainScrollKey),
+              child: const HowToBody(),
             ),
           ],
         ),

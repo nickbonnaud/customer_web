@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
+import 'package:customer_web/body/key_holder_cubit/key_holder_cubit.dart';
+import 'package:customer_web/body/scroll_watcher_cubit.dart';
 import 'package:customer_web/resources/visibility_finder.dart';
 import 'package:customer_web/widgets/how_to_row/widgets/widgets/how_to_dots.dart';
 import 'package:customer_web/widgets/how_to_row/widgets/widgets/how_to_image.dart';
@@ -13,18 +14,15 @@ import '../bloc/how_to_bloc.dart';
 import 'widgets/how_to_text/how_to_text.dart';
 
 class HowToBody extends StatefulWidget {
-  final GlobalKey _mainScrollKey;
 
-  const HowToBody({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  const HowToBody({Key? key})
+    : super(key: key);
 
   @override
   State<HowToBody> createState() => _HowToBodyState();
 }
 
 class _HowToBodyState extends State<HowToBody> {
-  final GlobalKey _bodyKey = GlobalKey();
   final VisibilityFinder _visibilityFinder = const VisibilityFinder(enterAnimationMinHeight: 400);
 
   late Timer _timer;
@@ -56,7 +54,7 @@ class _HowToBodyState extends State<HowToBody> {
 
   Widget _row() {
     return Row(
-      key: _bodyKey,
+      key: BlocProvider.of<KeyHolderCubit>(context).state.howToKey,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
@@ -75,7 +73,7 @@ class _HowToBodyState extends State<HowToBody> {
 
   Widget _column() {
     return Column(
-      key: _bodyKey,
+      key: BlocProvider.of<KeyHolderCubit>(context).state.howToKey,
       children: [
         const HowToImage(),
         const HowToDots(),
@@ -87,7 +85,7 @@ class _HowToBodyState extends State<HowToBody> {
   }
 
   void _updateScroll({required double absoluteOffset}) {
-    bool sectionCurrentlyVisible = _visibilityFinder.isVisible(parentKey: widget._mainScrollKey, childKey: _bodyKey);
+    bool sectionCurrentlyVisible = _visibilityFinder.isVisible(parentKey: BlocProvider.of<KeyHolderCubit>(context).state.mainScrollKey, childKey: BlocProvider.of<KeyHolderCubit>(context).state.howToKey);
     bool sectionWasVisible = BlocProvider.of<HowToBloc>(context).state.isSectionVisible;
 
     if (sectionCurrentlyVisible != sectionWasVisible) {

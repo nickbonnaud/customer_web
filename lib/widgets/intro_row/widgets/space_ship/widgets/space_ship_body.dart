@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:customer_web/widgets/intro_row/bloc/intro_widgets_loaded_bloc.dart';
+import 'package:customer_web/body/intro_widgets_loaded_bloc/intro_widgets_loaded_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

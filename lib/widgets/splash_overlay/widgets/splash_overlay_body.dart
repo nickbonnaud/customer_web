@@ -1,4 +1,4 @@
-import 'package:customer_web/widgets/intro_row/bloc/intro_widgets_loaded_bloc.dart';
+import 'package:customer_web/body/intro_widgets_loaded_bloc/intro_widgets_loaded_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,24 +13,15 @@ class SplashOverlayBody extends StatefulWidget {
 
 class _SplashOverlayBodyState extends State<SplashOverlayBody> with SingleTickerProviderStateMixin {
   final Image _introLogo = Image.asset('abstract_logo_large.png');
-  late Animation<double> _opacityAnimation;
-  late AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _imageLoadedListener();
-
-    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    _opacityAnimation = Tween<double>(begin: 1, end: .4).animate(_animationController);
-
-    _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _animationController.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        _animationController.forward();
+    _introLogo.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((_, __) {
+      if (mounted) {
+        BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(LoadingLogoLoaded());
       }
-    });
+    }));
   }
   
   @override
@@ -47,33 +38,11 @@ class _SplashOverlayBodyState extends State<SplashOverlayBody> with SingleTicker
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Center(
-              child: _logo(),
+              child: _introLogo,
             )
           ),
         );
       }
     );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  Widget _logo() {
-    return FadeTransition(
-      opacity: _opacityAnimation,
-      child: _introLogo,
-    );
-  }
-  
-  void _imageLoadedListener() {
-    _introLogo.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((_, __) {
-      if (mounted) {
-        _animationController.forward();
-        BlocProvider.of<IntroWidgetsLoadedBloc>(context).add(LoadingLogoLoaded());
-      }
-    }));
   }
 }

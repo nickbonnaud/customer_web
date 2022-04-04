@@ -8,11 +8,9 @@ import 'widgets/explanation.dart';
 
 class ExplanationRowBody extends StatelessWidget {
   final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
-  final GlobalKey _mainScrollKey;
 
-  const ExplanationRowBody({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  const ExplanationRowBody({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +23,25 @@ class ExplanationRowBody extends StatelessWidget {
             SizedBox(height: 30.h),
             _responsiveLayout(
               context: context,
-              firstWidget: Explanation(
+              firstWidget: const Explanation(
                 text: "AI payment monitoring protects you against fraud.",
                 animationPath: ExplanationBloc.brainAnimation,
-                mainScrollKey: _mainScrollKey
               ),
-              secondWidget: Explanation(
+              secondWidget: const Explanation(
                 text: "Safely pay with truly contactless transactions.",
                 animationPath: ExplanationBloc.coinsAnimation,
-                mainScrollKey: _mainScrollKey
               ),
             ),
             SizedBox(height: 30.h),
             _responsiveLayout(
               context: context,
-              firstWidget: Explanation(
+              firstWidget: const Explanation(
                 text: "No signing bills or scanning QR codes to pay.",
                 animationPath: ExplanationBloc.invoiceAnimation,
-                mainScrollKey: _mainScrollKey
               ),
-              secondWidget: Explanation(
+              secondWidget: const Explanation(
                 text: "Nova seamlessly pays when you leave the business.",
                 animationPath: ExplanationBloc.rocketAnimation,
-                mainScrollKey: _mainScrollKey
               ),
             ),
             SizedBox(height: 30.h)

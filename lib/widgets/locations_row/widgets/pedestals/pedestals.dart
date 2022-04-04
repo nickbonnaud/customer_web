@@ -1,4 +1,5 @@
-import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
+import 'package:customer_web/body/key_holder_cubit/key_holder_cubit.dart';
+import 'package:customer_web/body/scroll_watcher_cubit.dart';
 import 'package:customer_web/resources/visibility_finder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,14 +11,10 @@ import 'bloc/pedestals_parallax_bloc.dart';
 
 
 class Pedestals extends StatelessWidget {
-  final GlobalKey _sectionKey = GlobalKey();
   final VisibilityFinder _visibilityFinder = const VisibilityFinder(enterAnimationMinHeight: 250);
 
-  final GlobalKey _mainScrollKey;
-
-  Pedestals({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  const Pedestals({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,7 @@ class Pedestals extends StatelessWidget {
               ? _initialOffset(context: context)
               : state.parallaxOffset.h +_initialOffset(context: context),
             child: SizedBox(
-              key: _sectionKey,
+              key: BlocProvider.of<KeyHolderCubit>(context).state.pedestalsKey,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width * (2/3),
               child: const RiveAnimation.asset(
@@ -62,7 +59,7 @@ class Pedestals extends StatelessWidget {
   }
   
   void _updateScroll({required BuildContext context, required double absoluteOffset}) {
-    bool imageVisible = _visibilityFinder.isVisible(parentKey: _mainScrollKey, childKey: _sectionKey);
+    bool imageVisible = _visibilityFinder.isVisible(parentKey: BlocProvider.of<KeyHolderCubit>(context).state.mainScrollKey, childKey: BlocProvider.of<KeyHolderCubit>(context).state.pedestalsKey);
     bool visibilityChanged = false;
     
     if (imageVisible != BlocProvider.of<PedestalsParallaxBloc>(context).state.isImageVisible) {

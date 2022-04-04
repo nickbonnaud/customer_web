@@ -1,8 +1,9 @@
-import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
-import 'package:customer_web/widgets/intro_row/bloc/intro_widgets_loaded_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'intro_widgets_loaded_bloc/intro_widgets_loaded_bloc.dart';
+import 'key_holder_cubit/key_holder_cubit.dart';
+import 'scroll_watcher_cubit.dart';
 import 'widgets/home_screen_body.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -21,6 +22,10 @@ class HomeScreen extends StatelessWidget {
 
           BlocProvider<IntroWidgetsLoadedBloc>(
             create: (_) => IntroWidgetsLoadedBloc()
+          ),
+
+          BlocProvider<KeyHolderCubit>(
+            create: (_) => KeyHolderCubit()
           )
         ],
         child: const HomeScreenBody()

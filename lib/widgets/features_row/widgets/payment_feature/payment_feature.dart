@@ -8,11 +8,9 @@ import 'widgets/payment_feature_image.dart';
 
 class PaymentFeature extends StatelessWidget {
   final TextSizer _textSizer = const TextSizer();
-  final GlobalKey _mainScrollKey;
 
-  const PaymentFeature({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  const PaymentFeature({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +53,7 @@ class PaymentFeature extends StatelessWidget {
             ),
             BlocProvider<PaymentFeatureParallaxBloc>(
               create: (_) => PaymentFeatureParallaxBloc(),
-              child: PaymentFeatureImage(mainScrollKey: _mainScrollKey),
+              child: const PaymentFeatureImage(),
             )
           ],
         ),

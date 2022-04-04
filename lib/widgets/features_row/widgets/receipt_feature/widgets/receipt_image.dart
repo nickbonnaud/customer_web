@@ -1,4 +1,5 @@
-import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
+import 'package:customer_web/body/key_holder_cubit/key_holder_cubit.dart';
+import 'package:customer_web/body/scroll_watcher_cubit.dart';
 import 'package:customer_web/resources/visibility_finder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,14 +11,10 @@ import '../bloc/receipt_image_parallax_bloc.dart';
 
 class ReceiptImage extends StatelessWidget {
   static const double _initialOffset = 200;
-  final GlobalKey _imageKey = GlobalKey();
   final VisibilityFinder _visibilityFinder = const VisibilityFinder();
 
-  final GlobalKey _mainScrollKey;
-
-  ReceiptImage({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  const ReceiptImage({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -39,7 +36,7 @@ class ReceiptImage extends StatelessWidget {
                     ? _initialOffset.h
                     : state.parallaxOffset.h + _initialOffset.h,
                   child: FadeInImage.memoryNetwork(
-                    key: _imageKey,
+                    key: BlocProvider.of<KeyHolderCubit>(context).state.receiptImageKey,
                     placeholder: kTransparentImage,
                     image: '/assets/mock_ups/screen_7.png',
                     fit: BoxFit.contain,
@@ -56,7 +53,7 @@ class ReceiptImage extends StatelessWidget {
   void _updateScroll({required BuildContext context, required double absoluteOffset}) {
     BlocProvider.of<ReceiptImageParallaxBloc>(context).add(CurrentPositionChanged(currentPosition: absoluteOffset));
 
-    bool imageVisible = _visibilityFinder.isVisible(parentKey: _mainScrollKey, childKey: _imageKey);
+    bool imageVisible = _visibilityFinder.isVisible(parentKey: BlocProvider.of<KeyHolderCubit>(context).state.mainScrollKey, childKey: BlocProvider.of<KeyHolderCubit>(context).state.receiptImageKey);
     if (imageVisible != BlocProvider.of<ReceiptImageParallaxBloc>(context).state.isImageVisible) {
       BlocProvider.of<ReceiptImageParallaxBloc>(context).add(ImageVisibilityChanged(
         isImageVisible: imageVisible,

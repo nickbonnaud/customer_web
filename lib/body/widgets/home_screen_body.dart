@@ -1,9 +1,7 @@
-import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
 import 'package:customer_web/widgets/explanation_row/explanation_row.dart';
 import 'package:customer_web/widgets/features_row/features_row.dart';
 import 'package:customer_web/widgets/footer_row/footer_row.dart';
 import 'package:customer_web/widgets/how_to_row/how_to_row.dart';
-import 'package:customer_web/widgets/intro_row/bloc/intro_widgets_loaded_bloc.dart';
 import 'package:customer_web/widgets/intro_row/intro_row.dart';
 import 'package:customer_web/widgets/locations_row/locations_row.dart';
 import 'package:customer_web/widgets/main_app_bar.dart';
@@ -11,6 +9,11 @@ import 'package:customer_web/widgets/quick_sheet_row/quick_sheet_row.dart';
 import 'package:customer_web/widgets/splash_overlay/splash_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../intro_widgets_loaded_bloc/intro_widgets_loaded_bloc.dart';
+import '../key_holder_cubit/key_holder_cubit.dart';
+import '../scroll_watcher_cubit.dart';
+
 
 class HomeScreenBody extends StatefulWidget {
 
@@ -23,7 +26,6 @@ class HomeScreenBody extends StatefulWidget {
 
 class _HomeScreenBodyState extends State<HomeScreenBody> {
   final ScrollController _scrollController = ScrollController();
-  final GlobalKey _mainScrollKey = GlobalKey();
   
   late ScrollWatcherCubit _scrollWatcherCubit; 
 
@@ -59,30 +61,30 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
         return !state.loadingLogoLoaded
           ? Container()
           : CustomScrollView(
-              key: _mainScrollKey,
+              key: BlocProvider.of<KeyHolderCubit>(context).state.mainScrollKey,
               shrinkWrap: true,
               controller: _scrollController,
-              slivers: [
-                const MainAppBar(),
-                const SliverToBoxAdapter(
+              slivers: const [
+                MainAppBar(),
+                SliverToBoxAdapter(
                   child: IntroRow()
                 ),
                 SliverToBoxAdapter(
-                  child: FeaturesRow(mainScrollKey: _mainScrollKey),
+                  child: FeaturesRow(),
                 ),
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: QuickSheetRow(),
                 ),
                 SliverToBoxAdapter(
-                  child: ExplanationRow(mainScrollKey: _mainScrollKey),
+                  child: ExplanationRow(),
                 ),
                 SliverToBoxAdapter(
-                  child: LocationsRow(mainScrollKey: _mainScrollKey),
+                  child: LocationsRow(),
                 ),
                 SliverToBoxAdapter(
-                  child: HowToRow(mainScrollKey: _mainScrollKey)
+                  child: HowToRow()
                 ),
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: FooterRow()
                 )
               ],

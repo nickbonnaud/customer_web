@@ -7,11 +7,9 @@ import 'widgets/notification_screen_image.dart';
 
 class NotificationScreen extends StatelessWidget {
   final TextSizer _textSizer = const TextSizer();
-  final GlobalKey _mainScrollKey;
 
-  const NotificationScreen({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  const NotificationScreen({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +50,8 @@ class NotificationScreen extends StatelessWidget {
             )
           ),
           _separator(context: context),
-          Expanded(
-            child: NotificationScreenImage(mainScrollKey: _mainScrollKey)
+          const Expanded(
+            child: NotificationScreenImage()
           )
         ],
       ),

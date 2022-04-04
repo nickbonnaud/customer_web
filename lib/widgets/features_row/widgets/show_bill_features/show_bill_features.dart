@@ -11,11 +11,9 @@ import 'widgets/notification_screen/notification_screen.dart';
 
 class ShowBillFeatures extends StatelessWidget {
   final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
-  final GlobalKey _mainScrollKey;
 
-  const ShowBillFeatures({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  const ShowBillFeatures({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +34,14 @@ class ShowBillFeatures extends StatelessWidget {
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           rowSpacing: 20.w,
           columnSpacing: 60.h,
-          children: [
+          children: const [
             ResponsiveRowColumnItem(
               rowFit: FlexFit.tight,
-              child: BusinessScreen(mainScrollKey: _mainScrollKey)
+              child: BusinessScreen()
             ),
             ResponsiveRowColumnItem(
               rowFit: FlexFit.tight,
-              child: NotificationScreen(mainScrollKey: _mainScrollKey)
+              child: NotificationScreen()
             )
           ],
         )

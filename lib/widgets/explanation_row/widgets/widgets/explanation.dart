@@ -1,4 +1,5 @@
-import 'package:customer_web/cubit/scroll_watcher_cubit.dart';
+import 'package:customer_web/body/key_holder_cubit/key_holder_cubit.dart';
+import 'package:customer_web/body/scroll_watcher_cubit.dart';
 import 'package:customer_web/resources/visibility_finder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,17 +12,14 @@ import '../../bloc/explanation_bloc.dart';
 class Explanation extends StatefulWidget {
   final String _text;
   final String _animationPath;
-  final GlobalKey _mainScrollKey;
 
   const Explanation({
     required String text,
     required String animationPath,
-    required GlobalKey mainScrollKey,
     Key? key
   })
     : _text = text,
       _animationPath = animationPath,
-      _mainScrollKey = mainScrollKey,
       super(key: key);
 
   @override
@@ -30,9 +28,7 @@ class Explanation extends StatefulWidget {
 
 class _ExplanationState extends State<Explanation> with SingleTickerProviderStateMixin {
   final VisibilityFinder _visibilityFinder = VisibilityFinder(enterAnimationMinHeight: .4.sh);
-  final GlobalKey _iconKey = GlobalKey();
-
-  late AnimationController _iconController;
+  late final AnimationController _iconController;
   
   @override
   void initState() {
@@ -71,7 +67,7 @@ class _ExplanationState extends State<Explanation> with SingleTickerProviderStat
       onEnter: (_) => _playAnimation(),
       child: Lottie.asset(
         widget._animationPath,
-        key: _iconKey,
+        key: _widgetKey(),
         controller: _iconController,
         width: _iconDimensions(),
         height: _iconDimensions()
@@ -86,6 +82,21 @@ class _ExplanationState extends State<Explanation> with SingleTickerProviderStat
         fontSize: _fontSize()
       ),
     );
+  }
+
+  GlobalKey _widgetKey() {
+    switch (widget._animationPath) {
+      case ExplanationBloc.brainAnimation:
+        return BlocProvider.of<KeyHolderCubit>(context).state.brainKey;
+      case ExplanationBloc.coinsAnimation:
+        return BlocProvider.of<KeyHolderCubit>(context).state.coinsKey;
+      case ExplanationBloc.invoiceAnimation:
+        return BlocProvider.of<KeyHolderCubit>(context).state.invoiceKey;
+      case ExplanationBloc.rocketAnimation:
+        return BlocProvider.of<KeyHolderCubit>(context).state.rocketKey;
+      default:
+        return GlobalKey();
+    }
   }
 
   double _iconDimensions() {
@@ -118,7 +129,7 @@ class _ExplanationState extends State<Explanation> with SingleTickerProviderStat
   void _didEnterView() {
     if (_iconController.status != AnimationStatus.dismissed || BlocProvider.of<ExplanationBloc>(context).animationPlayed(animation: widget._animationPath)) return;
 
-    bool iconVisible = _visibilityFinder.isVisible(parentKey: widget._mainScrollKey, childKey: _iconKey,);
+    bool iconVisible = _visibilityFinder.isVisible(parentKey: BlocProvider.of<KeyHolderCubit>(context).state.mainScrollKey, childKey: _widgetKey());
 
     if (iconVisible) {
       BlocProvider.of<ExplanationBloc>(context).add(AnimationPlayed(animation: widget._animationPath));

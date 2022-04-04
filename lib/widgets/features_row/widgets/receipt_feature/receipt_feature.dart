@@ -9,11 +9,9 @@ import 'widgets/receipt_image.dart';
 
 class ReceiptFeature extends StatelessWidget {
   final TextSizer _textSizer = const TextSizer();
-  final GlobalKey _mainScrollKey;
 
-  const ReceiptFeature({required GlobalKey mainScrollKey, Key? key})
-    : _mainScrollKey = mainScrollKey,
-      super(key: key);
+  const ReceiptFeature({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,7 @@ class ReceiptFeature extends StatelessWidget {
             Expanded(
               child: BlocProvider<ReceiptImageParallaxBloc>(
                 create: (_) => ReceiptImageParallaxBloc(),
-                child: ReceiptImage(mainScrollKey: _mainScrollKey),
+                child: const ReceiptImage(),
               )
             ),
             _separator(context: context),
