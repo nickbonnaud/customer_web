@@ -26,7 +26,7 @@ class IntroForeground extends StatelessWidget {
     if (ResponsiveWrapper.of(context).isSmallerThan('LARGE_MOBILE')) {
       return _smallScreenBody();
     }
-    return _largeScreenBody();
+    return _largeScreenBody(context: context);
   }
 
   Widget _smallScreenBody() {
@@ -44,7 +44,7 @@ class IntroForeground extends StatelessWidget {
     );
   }
 
-  Widget _largeScreenBody() {
+  Widget _largeScreenBody({required BuildContext context}) {
     return Row(
       children: [
         SizedBox(width: .22.sw),
@@ -58,7 +58,7 @@ class IntroForeground extends StatelessWidget {
                 const IntroLogo(),
                 SizedBox(height: 10.h),
                 const CallToActionText(),
-                SizedBox(height: 10.h),
+                SizedBox(height: _callToActionSpacer(context: context)),
                 const CallToActionQR(),
                 SizedBox(height: 150.h,)
               ],
@@ -67,5 +67,12 @@ class IntroForeground extends StatelessWidget {
         )
       ],
     );
+  }
+
+  double _callToActionSpacer({required BuildContext context}) {
+    if (ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)) {
+      return 50.h;
+    }
+    return 10.h;
   }
 }

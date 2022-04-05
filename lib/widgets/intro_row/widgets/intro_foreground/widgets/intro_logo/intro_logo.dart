@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class IntroLogo extends StatefulWidget {
 
@@ -14,7 +15,11 @@ class IntroLogo extends StatefulWidget {
 }
 
 class _IntroLogoState extends State<IntroLogo> {
-  final Image _image = Image.asset('logo.png', fit: BoxFit.contain);
+  final FadeInImage _image = FadeInImage.memoryNetwork(
+    placeholder: kTransparentImage,
+    image: '/assets/logo.png',
+    fit: BoxFit.contain
+  );
   
   @override
   void initState() {

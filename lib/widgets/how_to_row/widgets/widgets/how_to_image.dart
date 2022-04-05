@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../../bloc/how_to_bloc.dart';
 
@@ -19,7 +20,10 @@ class HowToImage extends StatelessWidget {
           return AnimatedSwitcher(
             duration: const Duration(seconds: 2),
             child: Image(
-              image: AssetImage(HowToBloc.imageAssets[state.switcherIndex % HowToBloc.imageAssets.length]),
+              image: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: HowToBloc.imageAssets[state.switcherIndex % HowToBloc.imageAssets.length]
+              ).image,
               fit: BoxFit.contain,
               key: UniqueKey(),
             ),

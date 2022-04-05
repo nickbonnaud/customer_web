@@ -34,12 +34,13 @@ class ShowBillFeatures extends StatelessWidget {
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           rowSpacing: 20.w,
           columnSpacing: 60.h,
-          children: const [
-            ResponsiveRowColumnItem(
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            const ResponsiveRowColumnItem(
               rowFit: FlexFit.tight,
               child: BusinessScreen()
             ),
-            ResponsiveRowColumnItem(
+            const ResponsiveRowColumnItem(
               rowFit: FlexFit.tight,
               child: NotificationScreen()
             )

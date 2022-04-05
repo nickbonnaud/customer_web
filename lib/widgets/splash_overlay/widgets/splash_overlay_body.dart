@@ -1,6 +1,7 @@
 import 'package:customer_web/body/intro_widgets_loaded_bloc/intro_widgets_loaded_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class SplashOverlayBody extends StatefulWidget {
 
@@ -12,7 +13,10 @@ class SplashOverlayBody extends StatefulWidget {
 }
 
 class _SplashOverlayBodyState extends State<SplashOverlayBody> with SingleTickerProviderStateMixin {
-  final Image _introLogo = Image.asset('abstract_logo_large.png');
+  final FadeInImage _introLogo = FadeInImage.memoryNetwork(
+    placeholder: kTransparentImage,
+    image: '/assets/abstract_logo_large.png',
+  );
 
   @override
   void initState() {

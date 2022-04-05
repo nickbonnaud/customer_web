@@ -2,6 +2,7 @@ import 'package:customer_web/resources/text_sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'bloc/payment_feature_parallax_bloc.dart';
 import 'widgets/payment_feature_image.dart';
@@ -18,10 +19,13 @@ class PaymentFeature extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 50.w),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
           image: DecorationImage(
-            image: AssetImage('backgrounds/background_2.jpg'),
+            image: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: '/assets/backgrounds/background_2.jpg'
+            ).image,
             fit: BoxFit.cover
           )
         ),

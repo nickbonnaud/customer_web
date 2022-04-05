@@ -7,10 +7,10 @@ part 'how_to_state.dart';
 
 class HowToBloc extends Bloc<HowToEvent, HowToState> {
   static const List<String> imageAssets = [
-    'mock_ups/screen_8.png',
-    'mock_ups/screen_9.png',
-    'mock_ups/screen_10.png',
-    'mock_ups/screen_11.png'
+    '/assets/mock_ups/screen_8.png',
+    '/assets/mock_ups/screen_9.png',
+    '/assets/mock_ups/screen_10.png',
+    '/assets/mock_ups/screen_11.png'
   ];
 
   static const List<String> titleTexts = [

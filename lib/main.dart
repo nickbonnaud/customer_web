@@ -20,14 +20,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(990, 825),
+      minTextAdapt: true,
       builder: () => MaterialApp(
         title: 'Nova Pay',
         initialRoute: Routes.app,
         onGenerateRoute: (settings) => _router.goTo(context: context, settings: settings),
         theme: MainTheme.themeData(context: context),
         builder: (context, widget) {
+          ScreenUtil.setContext(context);
           return ResponsiveWrapper.builder(
-            ClampingScrollWrapper.builder(context, widget!),
+            ClampingScrollWrapper.builder(
+              context, 
+              MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), 
+                child: widget!
+              )
+            ),
             minWidth: 450,
             defaultScale: true,
             breakpoints: [

@@ -2,6 +2,7 @@ import 'package:customer_web/resources/text_sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'widgets/business_screen_image.dart';
 
@@ -15,10 +16,13 @@ class BusinessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(right: 20.w),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         image: DecorationImage(
-          image: AssetImage('backgrounds/background_0.jpg'),
+          image: FadeInImage.memoryNetwork(
+            placeholder: kTransparentImage,
+            image: '/assets/backgrounds/background_0.jpg'
+          ).image,
           fit: BoxFit.cover
         )
       ),
